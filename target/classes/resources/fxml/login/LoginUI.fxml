@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoneshop.fxui.login.LoginController">
+<!--    <stylesheets>
+        <URL value="@../Css/FxmlCss.css" />
+    </stylesheets> -->
+    <children>
+      <AnchorPane layoutX="350.0" prefHeight="510.0" prefWidth="350.0">
+         <children>
+                <Label alignment="CENTER" contentDisplay="RIGHT" layoutX="75.0" layoutY="51.0" prefHeight="60.0" prefWidth="200.0" text="Đăng Nhập" textFill="#aaaaaa">
+                    <font>
+                        <Font name="System Bold Italic" size="34.0" />
+                    </font>
+                </Label>
+                <MFXTextField fx:id="txtUserName" layoutX="35.0" layoutY="153.0" prefHeight="50.0" prefWidth="280.0" promptText="Tài khoản" >
+               <font>
+                  <Font size="16.0" />
+               </font>
+                </MFXTextField>
+                <MFXPasswordField fx:id="txtPassword" layoutX="35.0" layoutY="215.0" prefHeight="50.0" prefWidth="280.0" promptText="Mật khẩu" >
+               <font>
+                  <Font size="18.0" />
+               </font>
+                </MFXPasswordField>
+                <MFXButton fx:id="btnLogin" layoutX="204.0" layoutY="288.0" onAction="#btnLoginClick" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: green;" text="Đăng nhập" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+                </MFXButton>
+                <MFXButton fx:id="btnSignUp" layoutX="75.0" layoutY="419.0" onAction="#btnSignUpClick" prefHeight="40.0" prefWidth="200.0" text="Tạo tài khoản mới" textFill="GREEN" underline="true">
+               <font>
+                  <Font name="System Italic" size="18.0" />
+               </font>
+            </MFXButton>
+                <MFXComboBox fx:id="comboBox" layoutX="35.0" layoutY="287.0" prefHeight="40.0" prefWidth="118.0" promptText="Đăng nhập bởi"  />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="510.0" prefWidth="350.0" style="-fx-background-color: #DDDDDD;">
+         <children>
+             <ImageView fitHeight="350.0" fitWidth="394.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
+                 <image>
+                     <Image url="@/images/user-244-512.png" />
+                 </image>
+             </ImageView>
+         </children>
+      </AnchorPane>
+    </children>
+</AnchorPane>

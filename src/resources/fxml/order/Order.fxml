@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import java.lang.String?>
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoneshop.fxui.order.OrderController">
+   <stylesheets>
+      <String fx:value="/css/FxmlCss.css"/>
+   </stylesheets>
+   <children>
+      <HBox prefHeight="50.0" prefWidth="1200.0" spacing="20" alignment="CENTER" styleClass="hbox-nav" style="-fx-background-color: #0099FF;">
+         <children>
+            <MFXButton fx:id="btnAdmin" styleClass="nav-button" onAction="#btnAdminClick" text="Admin" HBox.hgrow="ALWAYS" />
+            <MFXButton fx:id="btnSmartPhone" styleClass="nav-button" onAction="#btnSmartPhoneClick" text="SmartPhone" HBox.hgrow="ALWAYS" />
+            <MFXButton fx:id="btnMfg" styleClass="nav-button" onAction="#btnMfgClick" text="Manufacturer" HBox.hgrow="ALWAYS" />
+            <MFXButton fx:id="btnOrder" styleClass="nav-button" onAction="#btnOrderClick" text="Order" HBox.hgrow="ALWAYS" />
+            <Label fx:id="txtUsername" alignment="CENTER_RIGHT" layoutX="772.0" prefHeight="50.0" prefWidth="250.0"/>
+            <MFXButton fx:id="LogOut" styleClass="nav-button" onAction="#btnLogoutClick" text="Logout" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <TableView fx:id="tvOrder" layoutX="100.0" layoutY="109.0" prefHeight="525.0" prefWidth="1000.0">
+         <columns>
+            <TableColumn fx:id="tcOrderID" minWidth="166.0" prefWidth="166.0" text="OrderID" />
+            <TableColumn fx:id="tcCustomerName" minWidth="168.0" prefWidth="168.0" text="Customer name" />
+            <TableColumn fx:id="tcProductName" minWidth="166.0" prefWidth="166.0" text="Product name" />
+            <TableColumn fx:id="tcAmount" minWidth="166.0" prefWidth="166.0" text="Amount" />
+            <TableColumn fx:id="tcTotal" minWidth="166.0" prefWidth="166.0" text="Total" />
+            <TableColumn fx:id="tcDate" minWidth="166.0" prefWidth="166.0" text="Date" />
+         </columns>
+      </TableView>
+      <MFXButton fx:id="btnReset" layoutX="560.0" layoutY="656.0" onAction="#btnResetClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-blue" text="Reset" textFill="WHITE" />
+      <Label layoutX="551.0" layoutY="50.0" text="Order">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

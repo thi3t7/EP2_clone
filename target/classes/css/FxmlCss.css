@@ -1,0 +1,145 @@
+
+.button:hover {
+    -fx-background-color: #0099CC;
+}
+
+.item {
+    -fx-background-color: #DDDDDD;
+    -fx-background-radius: 20;
+}
+
+.text {
+    -fx-text-fill: green;
+}
+
+.nav-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 0 8 0;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #1976D2, 4, 0.2, 0, 2);
+    -fx-border-color: transparent;
+    -fx-min-width: 120px;
+    -fx-max-width: 200px;
+    -fx-pref-width: 100%;
+    -fx-alignment: center;
+}
+.nav-button:hover {
+    -fx-background-color: #1976D2;
+}
+
+.nav-button-white {
+    -fx-background-color: white;
+    -fx-text-fill: #222;
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 0 8 0;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #b3e0ff, 2, 0.1, 0, 1);
+    -fx-border-color: #90caf9;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-min-width: 120px;
+    -fx-max-width: 200px;
+    -fx-pref-width: 100%;
+    -fx-alignment: center;
+    -fx-transition: background-color 0.3s;
+}
+.nav-button-white:hover {
+    -fx-background-color: #e3f2fd;
+    -fx-text-fill: #1976d2;
+    -fx-border-color: #1976d2;
+}
+
+/* Nền tổng thể */
+.root, .anchor-pane, .AnchorPane {
+    -fx-background-color: #f5f7fa;
+}
+
+/* Thanh navigation */
+.hbox-nav {
+    -fx-background-color: linear-gradient(to right, #43cea2, #185a9d);
+    -fx-padding: 0 0 0 0;
+    -fx-effect: dropshadow(gaussian, #b3e0ff, 8, 0.2, 0, 2);
+}
+
+/* Nút navigation */
+.nav-button {
+    -fx-background-color: white;
+    -fx-text-fill: #1976d2;
+    -fx-background-radius: 25px;
+    -fx-border-radius: 25px;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 8 0 8 0;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, #b3e0ff, 2, 0.1, 0, 1);
+    -fx-border-color: #90caf9;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+    -fx-min-width: 120px;
+    -fx-max-width: 200px;
+    -fx-pref-width: 100%;
+    -fx-alignment: center;
+    -fx-transition: background-color 0.3s;
+}
+.nav-button:hover {
+    -fx-background-color: #e3f2fd;
+    -fx-text-fill: #1976d2;
+    -fx-border-color: #1976d2;
+}
+
+/* Form nhập */
+.mfx-text-field, .mfx-combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #90caf9;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, #b3e0ff, 2, 0.1, 0, 1);
+}
+
+/* Bảng dữ liệu */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #90caf9;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+.table-view .column-header-background {
+    -fx-background-color: #e3f2fd;
+}
+.table-row-cell:filled:selected, .table-row-cell:filled:hover {
+    -fx-background-color: #f3e5f5;
+}
+
+/* Button chức năng */
+.button-green {
+    -fx-background-color: #43a047;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+}
+.button-green:hover {
+    -fx-background-color: #2e7031;
+}
+.button-red {
+    -fx-background-color: #e53935;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+}
+.button-red:hover {
+    -fx-background-color: #ab000d;
+}
+.button-blue {
+    -fx-background-color: #29b6f6;
+    -fx-text-fill: white;
+    -fx-background-radius: 8px;
+}
+.button-blue:hover {
+    -fx-background-color: #0288d1;
+}

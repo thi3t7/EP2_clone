@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import java.lang.String?>
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoneshop.fxui.smartphone.SmartPhoneIndexController">
+    <stylesheets>
+        <String fx:value="/css/FxmlCss.css"/>
+    </stylesheets> 
+    <children>
+        <TableView fx:id="tvSmartPhone" layoutX="400.0" layoutY="55.0" onMouseClicked="#btnViewClick" prefHeight="352.0" prefWidth="800.0">
+            <columns>
+                <TableColumn fx:id="tcName" prefWidth="89.0" text="Name" />
+                <TableColumn fx:id="tcMfg" prefWidth="89.0" text="Manufacturer" />
+                <TableColumn fx:id="tcPrice" prefWidth="89.0" text="Price" />
+                <TableColumn fx:id="tcScreen" prefWidth="89.0" text="Screen" />
+                <TableColumn fx:id="tcSystem" prefWidth="89.0" text="System" />
+                <TableColumn fx:id="tcCamera" prefWidth="89.0" text="Camera" />
+                <TableColumn fx:id="tcChip" prefWidth="89.0" text="Chip" />
+                <TableColumn fx:id="tcMemory" prefWidth="89.0" text="Memory" />
+                <TableColumn fx:id="tcBattery" prefWidth="89.0" text="Battery" />
+            </columns>
+        </TableView>
+        <Pane layoutY="55.0" prefHeight="645.0" prefWidth="400.0">
+            <children>
+                <Label layoutX="125.0" layoutY="1.0" text="SmartPhone">
+                    <font>
+                        <Font name="System Bold" size="26.0" />
+                    </font>
+                </Label>
+                <MFXTextField fx:id="txtName"  layoutX="50.0" layoutY="59.0" prefHeight="35.0" prefWidth="300.0" promptText="Enter Name" >
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </MFXTextField>
+                <MFXTextField fx:id="txtPrice"  layoutX="50.0" layoutY="153.0" prefHeight="35.0" prefWidth="300.0" promptText="Enter Price" >
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </MFXTextField>
+                <MFXTextField fx:id="txtScreen"  layoutX="50.0" layoutY="200.0" prefHeight="35.0" prefWidth="300.0" promptText="Enter Screen" >
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </MFXTextField>
+                <MFXTextField fx:id="txtSystem"  layoutX="50.0" layoutY="247.0" prefHeight="35.0" prefWidth="300.0" promptText="Enter System" >
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </MFXTextField>
+                <Separator layoutX="30.0" layoutY="48.0" prefWidth="350.0" />
+                <Separator layoutX="25.0" layoutY="562.0" prefWidth="350.0" />
+                <MFXButton fx:id="btnClear" buttonType="RAISED" layoutX="160.0" layoutY="608.0" onAction="#btnClear" prefHeight="30.0" prefWidth="80.0"  style="-fx-background-color: #F44336;" text="Clear" textFill="WHITE" />
+                <MFXButton fx:id="btnDelete" buttonType="RAISED" layoutX="70.0" layoutY="608.0" onAction="#btnDelete" prefHeight="30.0" prefWidth="80.0" styleClass="button-red" text="Delete" textFill="WHITE" />
+                <MFXButton fx:id="btnEdit" buttonType="RAISED" layoutX="160.0" layoutY="570.0" onAction="#btnEditClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-green" text="Edit" textFill="WHITE" />
+                <MFXButton fx:id="btnSave" buttonType="RAISED" layoutX="70.0" layoutY="570.0" onAction="#btnSaveClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-green" text="Save" textFill="WHITE" />
+                <MFXTextField fx:id="txtCamera"  layoutX="50.0" layoutY="294.0" prefHeight="35.0" prefWidth="300.0" promptText="Enter Camera" >
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </MFXTextField>
+                <MFXTextField fx:id="txtChip"  layoutX="50.0" layoutY="341.0" prefHeight="35.0" prefWidth="300.0" promptText="Enter Chip" >
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </MFXTextField>
+                <MFXTextField fx:id="txtBattery"  layoutX="50.0" layoutY="435.0" prefHeight="35.0" prefWidth="300.0" promptText="Enter Battery" >
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </MFXTextField>
+                <MFXTextField fx:id="txtMemory" layoutX="50.0" layoutY="388.0" prefHeight="35.0" prefWidth="300.0" promptText="Enter Memory" >
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </MFXTextField>
+                <MFXButton fx:id="btnReset" buttonType="RAISED" layoutX="250.0" layoutY="570.0" onAction="#btnResetClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-blue" text="Reset" textFill="WHITE">
+               <graphic>
+<!--                  <FontAwesomeIconView glyphName="UNDO" size="20" /> -->
+               </graphic></MFXButton>
+                <MFXComboBox fx:id="cbbMfg" layoutX="50.0" layoutY="106.0" prefHeight="35.0" prefWidth="300.0" promptText="Enter Manufacturer" />
+                <MFXButton fx:id="fileChooser" layoutX="49.0" layoutY="482.0" onAction="#fileChooserClick" prefHeight="30.0" prefWidth="135.0" style="-fx-background-color: #CCCCFF;" text="Choose Path Of Image" />
+                <MFXTextField fx:id="link" layoutX="49.0" layoutY="512.0" prefHeight="40.0" prefWidth="300.0" />
+            </children>
+        </Pane>
+        <ImageView fx:id="image" fitHeight="247.0" fitWidth="254.0" layoutX="861.0" layoutY="453.0" pickOnBounds="true" preserveRatio="true" />
+        <Label fx:id="nameOfImage" layoutX="861.0" layoutY="407.0" prefHeight="25.0" prefWidth="254.0" />
+      <HBox prefHeight="50.0" prefWidth="1200.0" spacing="20" alignment="CENTER" styleClass="hbox-nav" style="-fx-background-color: #0099FF;">
+    <children>
+        <MFXButton fx:id="btnAdmin" styleClass="nav-button" onAction="#btnAdminClick" text="Admin" HBox.hgrow="ALWAYS" />
+        <MFXButton fx:id="btnSmartPhone" styleClass="nav-button" onAction="#btnSmartPhoneClick" text="SmartPhone" HBox.hgrow="ALWAYS" />
+        <MFXButton fx:id="btnMfg" styleClass="nav-button" onAction="#btnMfgClick" text="Manufacturer" HBox.hgrow="ALWAYS" />
+        <MFXButton fx:id="btnOrder" styleClass="nav-button" onAction="#btnOrderClick" text="Order" HBox.hgrow="ALWAYS" />
+        <Label fx:id="txtUsername" alignment="CENTER_RIGHT" layoutX="772.0" prefHeight="50.0" prefWidth="250.0"/>
+        <MFXButton fx:id="LogOut" styleClass="nav-button" onAction="#btnLogoutClick" text="Logout" HBox.hgrow="ALWAYS" />
+        <!-- <Label fx:id="txtUsername" alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="250.0"/> -->
+    </children>
+</HBox>
+      <Label fx:id="lbMessage" alignment="TOP_LEFT" layoutX="400.0" layoutY="432.0" prefHeight="117.0" prefWidth="289.0" textFill="RED">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

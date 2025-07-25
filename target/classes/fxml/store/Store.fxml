@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.Font?>
+<?import io.github.palexdev.materialfx.controls.*?>
+<?import io.github.palexdev.materialfx.font.MFXFontIcon?>
+
+<?import javafx.geometry.Insets?>
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.phoneshop.fxui.store.StoreUIController"
+            prefHeight="800.0" prefWidth="1200.0">
+
+   <VBox spacing="5" prefWidth="1200.0">
+      <StackPane prefHeight="40" prefWidth="1200" style="-fx-background-color: #E6F7F4;">
+         <!-- Chữ chạy -->
+         <Label fx:id="topBannerText" text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1900.2091"
+                style="-fx-font-size: 14px; -fx-text-fill: #333;"
+                StackPane.alignment="CENTER_LEFT"/>
+      </StackPane>
+
+
+
+      <HBox layoutY="30.0" prefHeight="70.0" prefWidth="1200.0" spacing="20" alignment="CENTER_LEFT"
+         style="-fx-background-color: #FFFFFF;">
+      <!-- Logo -->
+         <ImageView fitHeight="60.0" preserveRatio="true" style="-fx-translate-x: 2;">
+            <image>
+               <Image url="@/images/logo6.png" />
+            </image>
+         </ImageView>
+
+      <!-- Thanh tìm kiếm -->
+         <TextField fx:id="searchBar"
+                    prefWidth="600.0"
+                    promptText=" Tìm kiếm sản phẩm, hãng sản xuất,..."
+                    style="
+               -fx-font-size: 16px;
+               -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
+               -fx-font-style: italic;">
+         </TextField>
+
+
+         <MFXButton fx:id="btnSearch" text="Tìm kiếm" onAction="#btnSearchClick"/>
+
+      <!-- Spacer -->
+      <Pane HBox.hgrow="ALWAYS"/>
+
+      <!-- Tài khoản -->
+      <Label fx:id="txtUserName" text="Tên người dùng" style="-fx-font-size: 14px;"/>
+
+      <!-- Giỏ hàng -->
+      <MFXButton fx:id="btnCart" text="🛒" onAction="#btnCartClick"/>
+
+   </HBox>
+
+      <!-- Sort bar -->
+      <!-- Sort bar -->
+      <HBox spacing="15" style="-fx-background-color: #E1E1E1;">
+         <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+         </padding>
+         <children>
+            <Label text="Sắp xếp theo:" style="-fx-font-weight: bold;"/>
+            <MFXButton text="Liên quan" onAction="#onSortRelevant"/>
+            <MFXButton text="Mới nhất" onAction="#onSortNewest"/>
+            <MFXButton text="Bán chạy" onAction="#onSortBestSeller"/>
+            <MFXButton text="Giá tăng dần" onAction="#onSortPriceAsc"/>
+            <MFXButton text="Giá giảm dần" onAction="#onSortPriceDesc"/>
+         </children>
+      </HBox>
+   </VBox>
+
+   <!-- Sản phẩm -->
+   <ScrollPane AnchorPane.topAnchor="210" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+      <TilePane fx:id="GpPhone" prefColumns="4" hgap="20" vgap="20">
+         <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+         </padding>
+      </TilePane>
+   </ScrollPane>
+
+
+</AnchorPane>

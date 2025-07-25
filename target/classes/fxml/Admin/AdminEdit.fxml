@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
+<?import io.github.palexdev.materialfx.controls.MFXTextField?>
+<?import java.lang.String?>
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoneshop.fxui.Admin.AdminEditController">
+    <stylesheets>
+        <String fx:value="/css/FxmlCss.css"/>
+    </stylesheets>
+    <children>
+        <HBox alignment="CENTER" spacing="0" layoutY="55.0" prefHeight="645.0" prefWidth="1200.0">
+            <children>
+                <VBox prefHeight="645.0" prefWidth="400.0" alignment="TOP_CENTER" spacing="18">
+                    <children>
+                        <Label text="Admin Edit" alignment="CENTER">
+                            <font>
+                                <Font name="System Bold" size="26.0" />
+                            </font>
+                        </Label>
+                        <MFXTextField fx:id="txtAccount" promptText="Enter Account" prefHeight="35.0" prefWidth="300.0" />
+                        <MFXPasswordField fx:id="txtOldPassword" promptText="Enter Password" prefHeight="35.0" prefWidth="300.0" />
+                        <MFXPasswordField fx:id="txtNewPassword" promptText="Enter Password" prefHeight="35.0" prefWidth="300.0" />
+                        <MFXTextField fx:id="txtName" promptText="Enter Name" prefHeight="35.0" prefWidth="300.0" />
+                        <MFXTextField fx:id="txtEmail" promptText="Enter Email" prefHeight="35.0" prefWidth="300.0" />
+                        <MFXTextField fx:id="txtNumberPhone" promptText="Enter Number Phone" prefHeight="35.0" prefWidth="300.0" />
+                        <HBox alignment="CENTER" spacing="12">
+                            <children>
+                                <MFXButton fx:id="btnSave" buttonType="RAISED" onAction="#btnSaveClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-green" text="Save" textFill="WHITE" />
+                                <MFXButton fx:id="btnClear" buttonType="RAISED" onAction="#btnClear" prefHeight="30.0" prefWidth="80.0" styleClass="button-red" text="Clear" textFill="WHITE" />
+                                <MFXButton fx:id="btnReset" buttonType="RAISED" onAction="#btnResetClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-blue" text="Reset" textFill="WHITE">
+                                    <graphic>
+                                        <Label text="⎋" style="-fx-font-size: 20;" />
+                                    </graphic>
+                                </MFXButton>
+                                <MFXButton fx:id="btnNew" buttonType="RAISED" onAction="#btnNewClick" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: #388E3C;" text="&lt;&lt;" textFill="WHITE" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="6">
+                            <children>
+                                <Label text="Message:" prefHeight="20.0" prefWidth="70.0">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lbMessage" alignment="TOP_LEFT" graphicTextGap="6.0" prefHeight="20.0" prefWidth="220.0" textFill="RED">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <TableView fx:id="tvAdmin" prefHeight="645.0" prefWidth="800.0">
+                    <columns>
+                        <TableColumn fx:id="tcAccount" minWidth="160.0" prefWidth="119.0" text="Account" />
+                        <TableColumn fx:id="tcPassword" minWidth="160.0" prefWidth="120.0" text="Password" />
+                        <TableColumn fx:id="tcName" minWidth="160.0" prefWidth="119.0" text="Name" />
+                        <TableColumn fx:id="tcEmail" minWidth="159.0" prefWidth="120.0" text="Email" />
+                        <TableColumn fx:id="tcNumberPhone" minWidth="159.0" prefWidth="120.0" text="Number Phone" />
+                    </columns>
+                </TableView>
+            </children>
+        </HBox>
+        <HBox prefHeight="50.0" prefWidth="1200.0" spacing="20" alignment="CENTER" styleClass="hbox-nav" style="-fx-background-color: #0099FF;">
+            <children>
+                <MFXButton fx:id="btnAdmin" styleClass="nav-button" onAction="#btnAdminClick" text="Admin" HBox.hgrow="ALWAYS" />
+                <MFXButton fx:id="btnSmartPhone" styleClass="nav-button" onAction="#btnSmartPhoneClick" text="SmartPhone" HBox.hgrow="ALWAYS" />
+                <MFXButton fx:id="btnMfg" styleClass="nav-button" onAction="#btnMfgClick" text="Manufacturer" HBox.hgrow="ALWAYS" />
+                <MFXButton fx:id="btnOrder" styleClass="nav-button" onAction="#btnOrderClick" text="Order" HBox.hgrow="ALWAYS" />
+                <Label fx:id="txtUsername" alignment="CENTER_RIGHT" layoutX="772.0" prefHeight="50.0" prefWidth="250.0"/>
+                <MFXButton fx:id="LogOut" styleClass="nav-button" onAction="#btnLogoutClick" text="Logout" HBox.hgrow="ALWAYS" />
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<AnchorPane id="AnchorPane" prefHeight="140.0" prefWidth="1050.0" styleClass="item" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoneshop.fxui.store.ProductInfoController">
+    <stylesheets>
+        <URL value="../Css/FxmlCss.css" />
+    </stylesheets> 
+    
+    <children>
+        <ImageView fx:id="image" fitHeight="126.0" fitWidth="159.0" layoutX="47.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+        <Label fx:id="name" layoutX="214.0" layoutY="28.0" prefHeight="75.0" prefWidth="159.0" text="Tên" textFill="#055b1e" wrapText="true">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label fx:id="price" layoutX="401.0" layoutY="47.0" prefHeight="36.0" prefWidth="100.0" text="Giá" textFill="#055b1e" wrapText="true">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Spinner fx:id="amount" layoutX="546.0" layoutY="48.0" prefHeight="36.0" prefWidth="100.0" />
+        <Label fx:id="total_price" layoutX="752.0" layoutY="47.0" prefHeight="36.0" prefWidth="80.0" text="Tổng tiền" textFill="#055b1e">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <MFXButton fx:id="deleteBtn" layoutX="894.0" layoutY="46.0" onAction="#deleteBtnClick" prefHeight="43.0" prefWidth="89.0" style="-fx-background-color: #DDDDDD;" text="Xóa" textFill="#055b1e">
+            <font>
+                <Font size="16.0" />
+            </font>
+         <graphic>
+            <FontAwesomeIconView fill="#055b1e" glyphName="TRASH" size="30" />
+         </graphic>
+        </MFXButton>
+        <CheckBox fx:id="checkbox" layoutX="24.0" layoutY="57.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" />
+    </children>
+</AnchorPane>
