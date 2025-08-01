@@ -7,6 +7,7 @@ package com.phoneshop.fxui.smartphone;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 
 
@@ -133,7 +135,7 @@ public class SmartPhoneIndexController implements Initializable {
     private MFXButton btnAdmin;
 
     @FXML
-    private ImageView image;
+    private FlowPane imageGallery;
 
     @FXML
     private Label nameOfImage;
@@ -230,6 +232,14 @@ public class SmartPhoneIndexController implements Initializable {
                 SmartPhone in = news();
                 System.out.println(smartphonedao.selectIdByManuName(cbbMfg.getValue().toString()));
                 in = smartphonedao.insert(in);
+                // Sau khi insert xong, lưu các ảnh phụ vào bảng image
+                int productId = in.getProductID();
+                for (String rawPath : link.getText().split(";")) {
+                    String fileName = new File(rawPath).getName();
+                    String relativePath = "images/" + fileName;
+                    smartphonedao.insertImage(productId, relativePath);
+                }
+
                 Success();
                 Navigator.getInstance().goToSmartPhoneIndex();
             } catch (Exception e) {
@@ -249,21 +259,46 @@ public class SmartPhoneIndexController implements Initializable {
         Navigator.getInstance().goToAdminIndex();
     }
 
+
+
     @FXML
     void btnViewClick(MouseEvent event) {
         try {
             SmartPhone imgsmart = tvSmartPhone.getSelectionModel().getSelectedItem();
-            String link = smartphonedao.SelectImg(imgsmart.getProductID().toString());
-            File file = new File(link);
-            String localUrl = file.toURI().toString();
-            Image img = new Image(localUrl);
-            image.setImage(img);
-            nameOfImage.setText("Image of " + imgsmart.getName() + ":");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+            if (imgsmart == null) return;
 
+            imageGallery.getChildren().clear(); // Clear ảnh cũ
+
+            List<String> imagePaths = smartphonedao.selectImagesByProductID(imgsmart.getProductID());
+            if (imagePaths == null || imagePaths.isEmpty()) {
+                System.out.println("Không có ảnh nào cho sản phẩm này.");
+                return;
+            }
+
+            for (String relativePath : imagePaths) {
+                InputStream is = getClass().getClassLoader().getResourceAsStream(relativePath);
+                if (is != null) {
+                    ImageView imgView = new ImageView(new Image(is));
+                    imgView.setFitHeight(120);
+                    imgView.setFitWidth(120);
+                    imgView.setPreserveRatio(true);
+                    imageGallery.getChildren().add(imgView);
+                } else {
+                    System.out.println("❌ Không tìm thấy ảnh tại: " + relativePath);
+                }
+            }
+
+            nameOfImage.setText("Images of " + imgsmart.getName());
+
+        } catch (Exception e) {
+            System.out.println("Lỗi khi load ảnh: " + e.getMessage());
+        }
     }
+
+
+
+
+
 
     public void initialize() {
 
@@ -331,9 +366,21 @@ public class SmartPhoneIndexController implements Initializable {
         smartphone.setChip(txtChip.getText());
         smartphone.setMemory(txtMemory.getText());
         smartphone.setBattery(txtBattery.getText());
-        smartphone.setLink(link.getText());
+
+        // ✅ Xử lý ảnh đại diện chính
+        String[] imagePaths = link.getText().split(";");
+        if (imagePaths.length > 0) {
+            String mainImagePath = imagePaths[0];
+            String mainImageFileName = new File(mainImagePath).getName();
+            String relativePath = "images/" + mainImageFileName;
+            smartphone.setLink(relativePath); // chỉ lưu ảnh chính
+        } else {
+            smartphone.setLink(""); // hoặc có thể set null nếu không có ảnh
+        }
+
         return smartphone;
     }
+
 
     private void selectAdminWarning() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -399,14 +446,18 @@ public class SmartPhoneIndexController implements Initializable {
     @FXML
     void fileChooserClick(ActionEvent event) {
         FileChooser fc = new FileChooser();
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("World Files", files));
-        File f = fc.showOpenDialog(null);
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", files));
+        List<File> selectedFiles = fc.showOpenMultipleDialog(null);
 
-        if (f != null) {
-            link.setText(f.getAbsolutePath().replace("\\", "\\\\"));
-
+        if (selectedFiles != null) {
+            StringBuilder sb = new StringBuilder();
+            for (File f : selectedFiles) {
+                sb.append(f.getAbsolutePath().replace("\\", "\\\\")).append(";");
+            }
+            link.setText(sb.toString());
         }
     }
+
 
     private void Success() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);

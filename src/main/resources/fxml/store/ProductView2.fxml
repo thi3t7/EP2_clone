@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -14,12 +13,22 @@
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXComboBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ScrollPane?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1110.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoneshop.fxui.store.ProductView2Controller">
    <children>
       <ImageView fx:id="Img" fitHeight="489.0" fitWidth="475.0" layoutX="69.0" layoutY="215.0" pickOnBounds="true" preserveRatio="true" />
+      <ScrollPane layoutX="69.0" layoutY="715.0" prefHeight="100.0" prefWidth="475.0" hbarPolicy="ALWAYS" vbarPolicy="NEVER" fitToHeight="true">
+         <HBox fx:id="imageGallery" spacing="10" alignment="CENTER_LEFT">
+            <padding>
+               <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+         </HBox>
+      </ScrollPane>
+
       <MFXButton fx:id="btnBack" layoutY="200.0" onAction="#btnBackClick" prefHeight="41.0" prefWidth="40.0"  text=" ">
          <graphic>
-            <FontAwesomeIconView fill="#649e0e" glyphName="ARROW_LEFT" size="30" text="" />
+
          </graphic>
       </MFXButton>
       <Label fx:id="lbName" alignment="CENTER" layoutX="629.0" layoutY="214.0" prefHeight="42.0" prefWidth="468.0" textFill="#055b1e" wrapText="true">
@@ -29,7 +38,6 @@
       </Label>
       <MFXButton fx:id="btnAddToCart" layoutX="910.0" layoutY="633.0" onAction="#btnAddToCartClick" prefHeight="41.0" prefWidth="180.0" style="-fx-background-color: #CCFF66;" text="Thêm vào giỏ hàng">
          <graphic>
-            <FontAwesomeIconView fill="#649e0e" mouseTransparent="true" size="25" text="" wrappingWidth="25.14286184310913" />
          </graphic>
          <font>
             <Font size="15.0" />
@@ -46,7 +54,7 @@
                   <Font name="Arial Bold Italic" size="20.0" />
                </font>
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="USER" size="30" />
+
                </graphic>
             </Label>
             <Label layoutX="159.0" prefHeight="150.0" prefWidth="375.0" text="MobileWorld">
@@ -56,7 +64,7 @@
             </Label>
             <ImageView fitHeight="151.0" fitWidth="187.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="../../images/logo6.png" />
+                  <Image url="@/images/logo6.png" />
                </image>
             </ImageView>
             <MFXButton fx:id="btnLogout" layoutX="998.0" onAction="#btnLogOut" prefHeight="50.0" prefWidth="112.0" text="Đăng xuất" textFill="WHITE">
@@ -64,14 +72,12 @@
                   <Font size="14.0" />
                </font>
                <graphic>
-                  <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="25" styleClass="iconColor" text="" />
                </graphic>
             </MFXButton>
             <AnchorPane layoutY="150.0" prefHeight="50.0" prefWidth="1110.0" style="-fx-background-color: #E1E1E1;">
                <children>
                   <MFXButton fx:id="HomeBtn" onAction="#HomeClick" prefHeight="50.0" prefWidth="120.0"  text="Trang chủ" textFill="#055b1e">
                      <graphic>
-                        <FontAwesomeIconView fill="#649e0e" glyphName="HOME" size="25" />
                      </graphic>
                      <font>
                         <Font size="16.0" />
@@ -84,7 +90,6 @@
                         <Font size="13.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" size="25" text="" wrappingWidth="11.142857551574707" />
                      </graphic>
                   </MFXButton>
                   <MFXButton fx:id="btnCart" layoutX="260.0" onAction="#btnCartClick" prefHeight="49.0" prefWidth="130.0" text="Giỏ hàng" textFill="#055b1e">
@@ -92,7 +97,6 @@
                         <Font size="16.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView fill="#649e0e" mouseTransparent="true" size="25" text="" />
                      </graphic>
                   </MFXButton>
                </children>

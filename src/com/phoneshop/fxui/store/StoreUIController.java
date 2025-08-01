@@ -188,12 +188,24 @@ public class StoreUIController implements Initializable {
             }
             for (SmartPhone phone : neww) {
                 FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource("/fxml/store/Product.fxml"));
-                URL url = getClass().getResource("/fxml/store/Product.fxml");
-                System.out.println("Product.fxml URL: " + url);
-
                 AnchorPane anchorpane = fxmlloader.load();
+
                 ProductController productController = fxmlloader.getController();
-                productController.setData(phone);
+
+                if (productController == null) {
+                    System.out.println("⚠ Controller của Product.fxml bị null!");
+                } else {
+                    productController.setData(phone);
+                    anchorpane.setOnMouseClicked(event -> {
+                        try {
+                            Navigator.getInstance().goToProductView2(phone.getName());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+
+                }
+
 
                 GpPhone.getChildren().add(anchorpane);
             }

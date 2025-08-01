@@ -8,6 +8,7 @@ package com.phoneshop.fxui.store;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -29,9 +30,9 @@ import javafx.scene.image.ImageView;
 
 
 public class ProductInfoController implements Initializable {
-    
+
     private SmartPhoneDAO smartphonedao = new SmartPhoneDAOImp();
-    
+
     @FXML
     private ImageView image;
     @FXML
@@ -54,7 +55,7 @@ public class ProductInfoController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
 
     }
-    
+
     public void initialize(int i){
         int initialValue = i;
         SpinnerValueFactory<Integer> valueFactory
@@ -68,17 +69,34 @@ public class ProductInfoController implements Initializable {
         smartphonedao.deleteCart(smartphonedao.selectProductIdByName(name.getText()));
         Navigator.getInstance().goToShoppingCart(UserName.CartID);
     }
-    
+
     public void setData(SmartPhone smartphone) {
-        String link = smartphonedao.SelectImg(smartphone.getProductID().toString());
-        File file = new File(link);
-        String localUrl = file.toURI().toString();
-        Image images = new Image(localUrl);
-        image.setImage(images);
-        name.setText(smartphone.getName());
-        price.setText(smartphone.getPrice() + "$");
-        total_price.setText(Integer.toString(Integer.parseInt(smartphone.getPrice())* smartphone.getAmount()) + "$");
-        
+        try {
+            String imageName = smartphonedao.SelectImg(smartphone.getProductID().toString());  // ví dụ: "vsmart-active-3-6gb.jpg"
+            String imagePath = "images/" + imageName;
+            System.out.println("image path: " + imagePath);
+
+            InputStream is = getClass().getClassLoader().getResourceAsStream(imagePath);
+
+            if (is == null) {
+                System.out.println("⚠ Ảnh không tồn tại trong resource: " + imagePath);
+                return;
+            }
+
+            Image imageFile = new Image(is);
+            image.setImage(imageFile);
+
+            name.setText(smartphone.getName());
+            price.setText(smartphone.getPrice() + "$");
+            total_price.setText(Integer.toString(Integer.parseInt(smartphone.getPrice()) * smartphone.getAmount()) + "$");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-    
+
+
+
+
+
 }

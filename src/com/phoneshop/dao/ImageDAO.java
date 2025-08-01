@@ -7,6 +7,8 @@ package com.phoneshop.dao;
 
 import javafx.collections.ObservableList;
 
+import java.util.List;
+
 /**
  *
  * @author Admin
@@ -20,4 +22,7 @@ public interface ImageDAO {
     public ObservableList SelectAllProductName();
 
     public void InsertIntoImages(Integer id, String link);
+
+    List<String> getImagesByProductID(int productID);
+
 }

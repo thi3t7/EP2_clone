@@ -5,6 +5,7 @@
  */
 package com.phoneshop.dao;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,26 +77,51 @@ public class ImageDAOImp implements ImageDAO {
 
         return name;
     }
-    
+
     public void InsertIntoImages(Integer id, String link) {
-        String sql = "INSERT INTO `image`(productID, link)\n"
-                        + "VALUES(?,?)";
-        ResultSet key = null;
+        // Chỉ lấy tên file cuối cùng, ví dụ "ip15.png"
+        String fileName = new File(link).getName();
+        String relativePath = "src/images/" + fileName;
+
+        String sql = "INSERT INTO image(productID, link) VALUES (?, ?)";
         try (
                 Connection conn = DbFactory.getConnection(database);
-                PreparedStatement stmt = 
-                    conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                ) {
-            
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ) {
             stmt.setInt(1, id);
-            stmt.setString(2, link);
+            stmt.setString(2, relativePath);  // Lưu đường dẫn tương đối
             int rowInserted = stmt.executeUpdate();
-              
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
 
-    
-    
+    @Override
+    public java.util.List<String> getImagesByProductID(int productID) {
+        java.util.List<String> imageLinks = new java.util.ArrayList<>();
+
+        String sql = "SELECT link FROM image WHERE productID = ?";
+        try (
+                Connection conn = DbFactory.getConnection(database);
+                PreparedStatement stmt = conn.prepareStatement(sql);
+        ) {
+            stmt.setInt(1, productID);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                imageLinks.add(rs.getString("link"));
+            }
+
+            rs.close();
+        } catch (Exception e) {
+            System.err.println("Lỗi lấy ảnh từ database: " + e.getMessage());
+        }
+
+        return imageLinks;
+    }
+
+
+
+
+
 }

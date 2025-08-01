@@ -6,6 +6,8 @@
 package com.phoneshop.dao;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import javafx.collections.ObservableList;
 
 /**
@@ -21,6 +23,8 @@ public interface SmartPhoneDAO {
     public ObservableList<SmartPhone> selectByName(String name);
 
     public SmartPhone insert(SmartPhone newSmartPhone);
+
+    void insertImage(int productId, String path);
 
     public boolean delete(SmartPhone deleteSmartPhone);
 
@@ -62,4 +66,6 @@ public interface SmartPhoneDAO {
     public int selectProductIdByName(String name);
     
     public boolean deleteCart(int id);
+
+    public List<String> selectImagesByProductID(int productId);
 }

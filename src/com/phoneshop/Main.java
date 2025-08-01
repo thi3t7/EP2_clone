@@ -2,11 +2,14 @@ package com.phoneshop;
 
 
 import com.phoneshop.fxui.Navigator;
+import com.phoneshop.fxui.store.ProductController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.InputStream;
 
 public class Main extends Application {
 
@@ -34,6 +37,9 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Login");
         primaryStage.show();
+
+
+
     }
 
 

@@ -6,6 +6,7 @@
 package com.phoneshop.dao;
 
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,6 +15,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.phoneshop.dbconnection.DbFactory;
 import com.phoneshop.dbconnection.DbType;
@@ -27,6 +29,7 @@ import javafx.collections.ObservableList;
 public class SmartPhoneDAOImp implements SmartPhoneDAO {
 
     public DbType database = DbType.MYSQL;
+    private ImageDAO imageDAO = new ImageDAOImp();
 
     public ObservableList<SmartPhone> selectAll() {
         ObservableList<SmartPhone> phone = FXCollections.observableArrayList();
@@ -44,11 +47,16 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
                 s.setName(rs.getString("productName"));
                 s.setPrice(rs.getString("price"));
                 s.setScreen(rs.getString("screen"));
-                s.setSystem(rs.getString("camera"));
-                s.setCamera(rs.getString("system"));
+                s.setSystem(rs.getString("system"));
+                s.setCamera(rs.getString("camera"));
                 s.setChip(rs.getString("chip"));
                 s.setMemory(rs.getString("memory"));
                 s.setBattery(rs.getString("battery"));
+
+                // ✅ Gọi ảnh từ bảng image
+                int productId = s.getProductID();
+                java.util.List<String> imageLinks = imageDAO.getImagesByProductID(productId);
+                s.setImageLinks(imageLinks);
 
                 phone.add(s);
             }
@@ -60,13 +68,13 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
     }
 
     public SmartPhone insert(SmartPhone newSmartPhone) {
-        String sql = "INSERT INTO product(`mfgID`, `name`, `price`, `screen`, `system`, `camera`, `chip`, `memory`, `battery`, `link` )"
-                + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO product(`mfgID`, `name`, `price`, `screen`, `system`, `camera`, `chip`, `memory`, `battery`) VALUES (?,?,?,?,?,?,?,?,?)";
         ResultSet key = null;
+
         try (
                 Connection conn = DbFactory.getConnection(database);
-                PreparedStatement stmt
-                = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);) {
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
+        ) {
             stmt.setInt(1, newSmartPhone.getMfgID());
             stmt.setString(2, newSmartPhone.getName());
             stmt.setString(3, newSmartPhone.getPrice());
@@ -76,7 +84,6 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
             stmt.setString(7, newSmartPhone.getChip());
             stmt.setString(8, newSmartPhone.getMemory());
             stmt.setString(9, newSmartPhone.getBattery());
-            stmt.setString(10, newSmartPhone.getLink());
 
             int rowInserted = stmt.executeUpdate();
 
@@ -85,6 +92,15 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
                 key.next();
                 int newkey = key.getInt(1);
                 newSmartPhone.setProductID(newkey);
+
+                // ✅ Thêm ảnh vào bảng image
+                ImageDAO imageDAO = new ImageDAOImp();
+                for (String fullPath : newSmartPhone.getImageLinks()) {
+                    String fileName = new File(fullPath).getName();
+                    String relativePath = "src/images/" + fileName;
+                    imageDAO.InsertIntoImages(newkey, relativePath);
+                }
+
                 return newSmartPhone;
             } else {
                 System.out.println("No SmartPhone insert");
@@ -95,14 +111,13 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
             return null;
         } finally {
             try {
-                if (key != null) {
-                    key.close();
-                }
+                if (key != null) key.close();
             } catch (SQLException ex) {
                 System.out.println(ex.getMessage() + " Insert");
             }
         }
     }
+
 
     public boolean delete(SmartPhone deleteSmartPhone) {
         String sqlCartDetail = "DELETE FROM cart_detail WHERE productID = ?";
@@ -160,19 +175,33 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
     public String SelectImg(String id) {
         String link = "";
 
+        String sql = "SELECT `link` FROM product WHERE `productID` = ?";
         try (
                 Connection conn = DbFactory.getConnection(database);
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT `link` FROM product where productID = " + id);) {
-            while (rs.next()) {
-                link += (rs.getString("link"));
+                PreparedStatement stmt = conn.prepareStatement(sql)
+        ) {
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                link = rs.getString("link");
+
+                // Optional: kiểm tra xem có null hoặc empty không
+                if (link == null || link.trim().isEmpty()) {
+                    System.out.println("Image link is empty for productID = " + id);
+                }
+            } else {
+                System.out.println("No image found for productID = " + id);
             }
+
+            rs.close();
         } catch (Exception e) {
-            System.err.println(e.getMessage() + " SelectImg");
+            System.err.println("SelectImg Error: " + e.getMessage());
         }
 
         return link;
     }
+
 
     public ObservableList selectmanu() {
         ObservableList manuname = FXCollections.observableArrayList();
@@ -205,6 +234,41 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
 
         return id;
     }
+
+    @Override
+    public void insertImage(int productId, String path) {
+        String sql = "INSERT INTO image(productID, link) VALUES (?, ?)";
+        try (
+                Connection conn = DbFactory.getConnection(database);
+                PreparedStatement stmt = conn.prepareStatement(sql);
+        ) {
+            stmt.setInt(1, productId);
+            stmt.setString(2, path);
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Lỗi khi insert ảnh phụ: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public List<String> selectImagesByProductID(int productId) {
+        List<String> imagePaths = new ArrayList<>();
+        String sql = "SELECT link FROM image WHERE productID = ?";
+        try (Connection conn = DbFactory.getConnection(database);
+             PreparedStatement stmt = conn.prepareStatement(sql);)
+        {
+            stmt.setInt(1, productId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                imagePaths.add(rs.getString("link"));
+            }
+        } catch (Exception e) {
+            System.out.println("SelectImg Error: " + e.getMessage());
+        }
+        return imagePaths;
+    }
+
+
 
     public boolean update(SmartPhone editphone) {
         String sql = "UPDATE product set"
@@ -253,7 +317,7 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
         try (
                 Connection conn = DbFactory.getConnection(database);
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT `productID`, manufacturer.mfgID AS mfgID,manufacturer.`name` AS mfgName, product.`name` AS productName, `price`, `screen`, `camera`, `system`, `chip`, `memory`,`battery`,`link` \n"
+                ResultSet rs = stmt.executeQuery("SELECT `productID`, manufacturer.mfgID AS mfgID,manufacturer.`name` AS mfgName, product.`name` AS productName, `price`, `screen`, `camera`, `system`, `chip`, `memory`,`battery` \n"
                         + "FROM product JOIN manufacturer ON product.mfgID = manufacturer.mfgID");) {
             while (rs.next()) {
                 SmartPhone s = new SmartPhone();
@@ -268,7 +332,11 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
                 s.setChip(rs.getString("chip"));
                 s.setMemory(rs.getString("memory"));
                 s.setBattery(rs.getString("battery"));
-                s.setLink(rs.getString("link"));
+
+                // ✅ Gọi ảnh từ bảng image
+                int productId = s.getProductID();
+                java.util.List<String> imageLinks = imageDAO.getImagesByProductID(productId);
+                s.setImageLinks(imageLinks);
 
                 phone.add(s);
             }
@@ -285,7 +353,7 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
         try (
                 Connection conn = DbFactory.getConnection(database);
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT `productID`, manufacturer.mfgID AS mfgID,manufacturer.`name` AS mfgName, product.`name` AS productName, `price`, `screen`, `camera`, `system`, `chip`, `memory`,`battery`,`link` \n"
+                ResultSet rs = stmt.executeQuery("SELECT `productID`, manufacturer.mfgID AS mfgID,manufacturer.`name` AS mfgName, product.`name` AS productName, `price`, `screen`, `camera`, `system`, `chip`, `memory`,`battery`\n"
                         + "FROM product JOIN manufacturer ON product.mfgID = manufacturer.mfgID \n"
                         + "WHERE product.`name` LIKE" + "'" + "%" + name + "%" + "'");) {
 
@@ -302,7 +370,11 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
                 s.setChip(rs.getString("chip"));
                 s.setMemory(rs.getString("memory"));
                 s.setBattery(rs.getString("battery"));
-                s.setLink(rs.getString("link"));
+
+                // ✅ Gọi ảnh từ bảng image
+                int productId = s.getProductID();
+                java.util.List<String> imageLinks = imageDAO.getImagesByProductID(productId);
+                s.setImageLinks(imageLinks);
 
                 phone.add(s);
             }
@@ -336,7 +408,11 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
                 s.setChip(rs.getString("chip"));
                 s.setMemory(rs.getString("memory"));
                 s.setBattery(rs.getString("battery"));
-                s.setLink(rs.getString("link"));
+
+                // ✅ Gọi ảnh từ bảng image
+                int productId = s.getProductID();
+                java.util.List<String> imageLinks = imageDAO.getImagesByProductID(productId);
+                s.setImageLinks(imageLinks);
 
                 phone.add(s);
             }
@@ -530,9 +606,9 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
             while (rs.next()) {
                 SmartPhone s = new SmartPhone();
                 s.setProductID(rs.getInt("productID"));
-                s.setAmount(rs.getInt("amount"));
+                s.setMfgName(rs.getString("mfgName"));
                 s.setMfgID(rs.getInt("mfgID"));
-                s.setName(rs.getString("name"));
+                s.setName(rs.getString("productName"));
                 s.setPrice(rs.getString("price"));
                 s.setScreen(rs.getString("screen"));
                 s.setSystem(rs.getString("system"));
@@ -540,7 +616,11 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
                 s.setChip(rs.getString("chip"));
                 s.setMemory(rs.getString("memory"));
                 s.setBattery(rs.getString("battery"));
-                s.setLink(rs.getString("link"));
+
+                // ✅ Gọi ảnh từ bảng image
+                int productId = s.getProductID();
+                java.util.List<String> imageLinks = imageDAO.getImagesByProductID(productId);
+                s.setImageLinks(imageLinks);
 
                 product.add(s);
             }

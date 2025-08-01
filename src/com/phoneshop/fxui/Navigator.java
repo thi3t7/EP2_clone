@@ -136,10 +136,17 @@ public class Navigator {
     }
 
     public void goToProductView2(String name) throws IOException {
-        goTo(PRODUCT_VIEW2);
-        ProductView2Controller ctrl = loader.getController();
-        ctrl.initialize(name);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/store/ProductView2.fxml"));
+        Parent root = loader.load();
+
+        ProductView2Controller controller = loader.getController();
+        controller.setSmartPhoneByName(name); // ✅ Gọi đúng tên hàm mới
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
+
+
 
     public void goToShoppingCart(int userId) throws IOException {
         goTo(SHOPPINGCART_FXML);

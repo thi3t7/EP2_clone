@@ -9,6 +9,7 @@ package com.phoneshop.fxui.store;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -30,6 +31,7 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 
 
 public class ProductView2Controller implements Initializable {
@@ -40,6 +42,9 @@ public class ProductView2Controller implements Initializable {
 
     @FXML
     private ImageView Img;
+
+    @FXML
+    private HBox imageGallery;
 
     @FXML
     private TextField searchBar;
@@ -146,25 +151,64 @@ public class ProductView2Controller implements Initializable {
         System.out.println("#ProductView2Controller initialized!");
     }
 
-    public void initialize(String name) {
+
+
+    public void setSmartPhoneByName(String name) {
         ObservableList<SmartPhone> smartphone = smartphonedao.selectByName(name);
 
-        File file = new File(smartphone.get(0).getLink());
-        String localUrl = file.toURI().toString();
-        Image image = new Image(localUrl);
-        Img.setImage(image);
+        SmartPhone phone = smartphone.get(0);
+        this.SmartPhone = phone;
+        UserName.id = phone.getProductID();
 
-        UserName.id = smartphone.get(0).getProductID();
-        lbName.setText(smartphone.get(0).getName());
-        lbPrice.setText(smartphone.get(0).getPrice() + "$");
-        lbScreen.setText(smartphone.get(0).getScreen());
-        lbCamera.setText(smartphone.get(0).getCamera());
-        lbSystem.setText(smartphone.get(0).getSystem());
-        lbChip.setText(smartphone.get(0).getChip());
-        lbMemory.setText(smartphone.get(0).getMemory());
-        lbBattery.setText(smartphone.get(0).getBattery());
+        // ✅ Ảnh chính
+        try {
+            String firstImage = phone.getFirstImageLink();
+            InputStream is = getClass().getClassLoader().getResourceAsStream(firstImage);
+            if (is != null) {
+                Img.setImage(new Image(is));
+            }
+        } catch (Exception e) {
+            System.out.println("Không load được ảnh chính: " + e.getMessage());
+        }
 
+        // ✅ Ảnh phụ
+        imageGallery.getChildren().clear();
+        for (String link : phone.getImageLinks()) {
+            try {
+                InputStream is = getClass().getClassLoader().getResourceAsStream(link);
+                if (is != null) {
+                    Image img = new Image(is, 100, 100, true, true);
+                    ImageView imgView = new ImageView(img);
+                    imgView.setFitHeight(100);
+                    imgView.setFitWidth(100);
+                    imgView.setPreserveRatio(true);
+
+                    imgView.setOnMouseClicked(e -> {
+                        try {
+                            Img.setImage(new Image(getClass().getClassLoader().getResourceAsStream(link)));
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+
+                    imageGallery.getChildren().add(imgView);
+                }
+            } catch (Exception e) {
+                System.out.println("Lỗi ảnh phụ: " + link);
+            }
+        }
+
+        // ✅ Thông tin sản phẩm
+        lbName.setText(phone.getName());
+        lbPrice.setText(phone.getPrice() + "$");
+        lbScreen.setText(phone.getScreen());
+        lbCamera.setText(phone.getCamera());
+        lbSystem.setText(phone.getSystem());
+        lbChip.setText(phone.getChip());
+        lbMemory.setText(phone.getMemory());
+        lbBattery.setText(phone.getBattery());
     }
+
 
     @FXML
     private void btnAddToCartClick(ActionEvent event) throws IOException {
@@ -193,4 +237,6 @@ public class ProductView2Controller implements Initializable {
     private void btnCartClick(ActionEvent event) throws IOException {
         Navigator.getInstance().goToShoppingCart(UserName.CartID);
     }
+
+
 }

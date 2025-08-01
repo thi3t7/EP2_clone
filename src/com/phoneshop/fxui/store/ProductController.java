@@ -10,6 +10,7 @@ import javafx.scene.text.Text;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class ProductController {
 
@@ -34,21 +35,26 @@ public class ProductController {
     public void setData(SmartPhone smartphone) {
         this.phone = smartphone;
 
-        // Load hình ảnh
-        String link = smartphone.getLink(); // link kiểu "images/iphone.png"
-        File file = new File(link);
-        String localUrl = file.toURI().toString();
-        Img.setImage(new Image(localUrl));
+        // ✅ Load ảnh đầu tiên trong danh sách
+        try {
+            String path = smartphone.getFirstImageLink(); // ảnh đầu tiên
+            InputStream is = getClass().getClassLoader().getResourceAsStream(path);
+            if (is != null) {
+                Img.setImage(new Image(is));
+            } else {
+                System.out.println("❌ Không tìm thấy ảnh tại: " + path);
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Lỗi khi load ảnh: " + e.getMessage());
+        }
 
-        // Tên sản phẩm
+        // ✅ Tên sản phẩm
         lbName.setText(smartphone.getName());
 
-        // Tính giá
+        // ✅ Tính giá
         try {
             double oldPrice = Double.parseDouble(smartphone.getPrice());
-
-            // Giả sử có discount (ví dụ hardcode nếu bạn chưa có trường)
-            int discount = 15; // hoặc gán tạm = 15;
+            int discount = 15;
             double newPrice = oldPrice * (100 - discount) / 100.0;
 
             txtOldPrice.setText(String.format("%,.0f ₫", oldPrice));
@@ -60,6 +66,8 @@ public class ProductController {
             lbNewPrice.setText("Giá không hợp lệ");
         }
     }
+
+
 
     @FXML
     private void onImageClick() throws IOException {
