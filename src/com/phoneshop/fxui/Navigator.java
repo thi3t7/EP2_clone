@@ -148,11 +148,17 @@ public class Navigator {
 
 
 
-    public void goToShoppingCart(int userId) throws IOException {
-        goTo(SHOPPINGCART_FXML);
-        ShoppingCartController ctrl = loader.getController();
-        ctrl.initialize(userId);
+    public void goToShoppingCart(int cartId) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/store/ShoppingCart.fxml"));
+        Parent root = loader.load();
+
+        ShoppingCartController controller = loader.getController();
+        controller.initialize(cartId);
+
+        stage.setScene(new Scene(root));
+        stage.show();
     }
+
 
     public void goToOrder() throws IOException {
         goTo(ORDER_FXML);

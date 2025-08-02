@@ -1,208 +1,149 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<?import io.github.palexdev.materialfx.controls.MFXComboBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.ScrollPane?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1110.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoneshop.fxui.store.ProductView2Controller">
+<?import javafx.scene.layout.StackPane?>
+<AnchorPane fx:id="root" prefHeight="700.0" prefWidth="1012.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoneshop.fxui.store.ProductView2Controller">
    <children>
-      <ImageView fx:id="Img" fitHeight="489.0" fitWidth="475.0" layoutX="69.0" layoutY="215.0" pickOnBounds="true" preserveRatio="true" />
-      <ScrollPane layoutX="69.0" layoutY="715.0" prefHeight="100.0" prefWidth="475.0" hbarPolicy="ALWAYS" vbarPolicy="NEVER" fitToHeight="true">
-         <HBox fx:id="imageGallery" spacing="10" alignment="CENTER_LEFT">
-            <padding>
-               <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
-         </HBox>
-      </ScrollPane>
 
-      <MFXButton fx:id="btnBack" layoutY="200.0" onAction="#btnBackClick" prefHeight="41.0" prefWidth="40.0"  text=" ">
-         <graphic>
+      <!-- Header -->
+      <VBox spacing="5" prefWidth="1200.0">
+         <StackPane prefHeight="40" prefWidth="1200" style="-fx-background-color: #E6F7F4;">
+            <!-- Chữ chạy -->
+            <Label fx:id="topBannerText" text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1420.0420"
+                   style="-fx-font-size: 14px; -fx-text-fill: #333;"
+                   StackPane.alignment="CENTER_LEFT"/>
+         </StackPane>
 
-         </graphic>
-      </MFXButton>
-      <Label fx:id="lbName" alignment="CENTER" layoutX="629.0" layoutY="214.0" prefHeight="42.0" prefWidth="468.0" textFill="#055b1e" wrapText="true">
-         <font>
-            <Font name="System Bold" size="28.0" />
-         </font>
-      </Label>
-      <MFXButton fx:id="btnAddToCart" layoutX="910.0" layoutY="633.0" onAction="#btnAddToCartClick" prefHeight="41.0" prefWidth="180.0" style="-fx-background-color: #CCFF66;" text="Thêm vào giỏ hàng">
-         <graphic>
-         </graphic>
-         <font>
-            <Font size="15.0" />
-         </font></MFXButton>
-      <Spinner fx:id="Spinner" editable="true" layoutX="763.0" layoutY="641.0" prefHeight="28.0" prefWidth="80.0" />
-      <Label layoutX="660.0" layoutY="635.0" prefHeight="37.0" prefWidth="103.0" text="Nhập Số lượng" textFill="#055b1e">
-         <font>
-            <Font size="15.0" />
-         </font></Label>
-      <AnchorPane prefHeight="200.0" prefWidth="1110.0" style="-fx-background-color: #99CD4E;">
-         <children>
-            <Label fx:id="txtUserName" alignment="CENTER_RIGHT" layoutX="766.0" layoutY="1.0" prefHeight="49.0" prefWidth="220.0" textFill="WHITE">
-               <font>
-                  <Font name="Arial Bold Italic" size="20.0" />
-               </font>
-               <graphic>
 
-               </graphic>
-            </Label>
-            <Label layoutX="159.0" prefHeight="150.0" prefWidth="375.0" text="MobileWorld">
-               <font>
-                  <Font name="System Bold Italic" size="60.0" />
-               </font>
-            </Label>
-            <ImageView fitHeight="151.0" fitWidth="187.0" pickOnBounds="true" preserveRatio="true">
+
+         <HBox layoutY="30.0" prefHeight="70.0" prefWidth="1200.0" spacing="20" alignment="CENTER_LEFT"
+               style="-fx-background-color: #FFFFFF;">
+            <!-- Logo -->
+            <ImageView layoutX="30" fitHeight="60" preserveRatio="true" style="-fx-translate-x: 2;">
                <image>
                   <Image url="@/images/logo6.png" />
                </image>
             </ImageView>
-            <MFXButton fx:id="btnLogout" layoutX="998.0" onAction="#btnLogOut" prefHeight="50.0" prefWidth="112.0" text="Đăng xuất" textFill="WHITE">
-               <font>
-                  <Font size="14.0" />
-               </font>
+
+            <!-- Thanh tìm kiếm -->
+            <TextField fx:id="searchBar"
+                       prefWidth="600.0"
+                       promptText=" Tìm kiếm sản phẩm, hãng sản xuất,..."
+                       style="
+               -fx-font-size: 16px;
+               -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
+               -fx-font-style: italic;">
+            </TextField>
+
+
+            <MFXButton fx:id="btnSearch" text="Tìm kiếm" onAction="#btnSearchClick"/>
+
+            <!-- Giỏ hàng -->
+            <Button>
                <graphic>
+                  <ImageView fitHeight="30" fitWidth="30">
+                     <image>
+                        <Image url="@/images/cart.png"/>
+                     </image>
+                  </ImageView>
                </graphic>
-            </MFXButton>
-            <AnchorPane layoutY="150.0" prefHeight="50.0" prefWidth="1110.0" style="-fx-background-color: #E1E1E1;">
-               <children>
-                  <MFXButton fx:id="HomeBtn" onAction="#HomeClick" prefHeight="50.0" prefWidth="120.0"  text="Trang chủ" textFill="#055b1e">
-                     <graphic>
-                     </graphic>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </MFXButton>
-                  <MFXComboBox fx:id="cbbMfg" layoutX="130.0" layoutY="-1.0" onAction="#cbbMfgClick" prefHeight="49.0" prefWidth="120.0" promptText="Hãng sản xuất" />
-                  <TextField fx:id="searchBar" layoutX="745.0" layoutY="5.0" prefHeight="40.0" prefWidth="300.0" promptText="Tìm kiếm" />
-                  <MFXButton fx:id="btnSearch" alignment="CENTER" layoutX="1040.0" layoutY="5.0" onAction="#btnSearchClick" prefHeight="39.0" prefWidth="44.0" style="-fx-background-color: #649e0e;" text=" ">
-                     <font>
-                        <Font size="13.0" />
-                     </font>
-                     <graphic>
-                     </graphic>
-                  </MFXButton>
-                  <MFXButton fx:id="btnCart" layoutX="260.0" onAction="#btnCartClick" prefHeight="49.0" prefWidth="130.0" text="Giỏ hàng" textFill="#055b1e">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                     <graphic>
-                     </graphic>
-                  </MFXButton>
-               </children>
-            </AnchorPane>
+            </Button>
+
+            <!-- Tài khoản -->
+            <HBox alignment="CENTER_LEFT" spacing="5">
+               <ImageView fitHeight="30" fitWidth="30">
+                  <image>
+                     <Image url="@/images/user.png"/>
+                  </image>
+               </ImageView>
+               <Label fx:id="txtUserName" text=""/>
+            </HBox>
+
+            <MFXButton fx:id="btnLogOut" text="Log Out" onAction="#btnLogOut"/>
+         </HBox>
+
+         <!-- Sort bar -->
+
+      </VBox>
+
+      <!-- Nội dung chính -->
+      <HBox layoutX="40.0" layoutY="100.0" spacing="40.0" AnchorPane.bottomAnchor="20.0">
+         <children>
+
+            <!-- Cột trái: ảnh -->
+            <VBox spacing="10">
+               <ImageView fx:id="Img" fitHeight="400.0" fitWidth="441.0" preserveRatio="true" />
+               <ScrollPane hbarPolicy="ALWAYS" prefHeight="113.0" prefWidth="441.0" vbarPolicy="NEVER">
+                  <HBox fx:id="imageGallery" alignment="CENTER_LEFT" spacing="10">
+                     <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                     </padding>
+                  </HBox>
+
+               </ScrollPane>
+               <MFXButton fx:id="btnBack" onAction="#btnBackClick" text="← Quay lại" />
+            </VBox>
          </children>
-      </AnchorPane>
-      <Label alignment="CENTER_RIGHT" layoutX="629.0" layoutY="271.0" prefHeight="40.0" prefWidth="114.0" text="Giá:" textFill="#055b1e">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <padding>
-            <Insets right="5.0" />
-         </padding>
-      </Label>
-      <Label alignment="TOP_RIGHT" layoutX="629.0" layoutY="471.0" prefHeight="60.0" prefWidth="110.0" text="Màn hình" textFill="#055b1e">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <padding>
-            <Insets right="5.0" />
-         </padding>
-      </Label>
-      <Label alignment="TOP_RIGHT" layoutX="629.0" layoutY="541.0" prefHeight="60.0" prefWidth="110.0" text="Camera" textFill="#055b1e">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <padding>
-            <Insets right="5.0" />
-         </padding>
-      </Label>
-      <Label alignment="CENTER_RIGHT" layoutX="868.0" layoutY="272.0" prefHeight="40.0" prefWidth="120.0" text="Hệ điều hành:" textFill="#055b1e">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <padding>
-            <Insets right="5.0" />
-         </padding>
-      </Label>
-      <Label alignment="CENTER_RIGHT" layoutX="629.0" layoutY="321.0" prefHeight="40.0" prefWidth="110.0" text="Chip" textFill="#055b1e">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <padding>
-            <Insets right="5.0" />
-         </padding>
-      </Label>
-      <Label alignment="CENTER_RIGHT" layoutX="629.0" layoutY="371.0" prefHeight="40.0" prefWidth="110.0" text="Bộ nhớ" textFill="#055b1e">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <padding>
-            <Insets right="5.0" />
-         </padding>
-      </Label>
-      <Label alignment="CENTER_RIGHT" layoutX="629.0" layoutY="421.0" prefHeight="40.0" prefWidth="110.0" text="Pin và sạc" textFill="#055b1e" wrapText="true">
-         <font>
-            <Font size="18.0" />
-         </font>
-         <padding>
-            <Insets right="5.0" />
-         </padding>
-      </Label>
-      <Label fx:id="lbPrice" layoutX="743.0" layoutY="271.0" prefHeight="40.0" prefWidth="90.0" textFill="#055b1e" wrapText="true">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbScreen" alignment="TOP_LEFT" layoutX="743.0" layoutY="471.0" prefHeight="60.0" prefWidth="355.0" textFill="#055b1e" wrapText="true">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbCamera" alignment="TOP_LEFT" layoutX="743.0" layoutY="541.0" prefHeight="60.0" prefWidth="355.0" textFill="#055b1e" wrapText="true">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbSystem" layoutX="988.0" layoutY="272.0" prefHeight="40.0" prefWidth="117.0" textFill="#055b1e" wrapText="true">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbChip" layoutX="743.0" layoutY="321.0" prefHeight="40.0" prefWidth="355.0" textFill="#055b1e" wrapText="true">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbMemory" layoutX="743.0" layoutY="371.0" prefHeight="40.0" prefWidth="355.0" textFill="#055b1e">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Separator layoutX="628.0" layoutY="266.0" orientation="VERTICAL" prefHeight="434.0" />
-      <Label fx:id="lbBattery" layoutX="743.0" layoutY="421.0" prefHeight="40.0" prefWidth="355.0" textFill="#055b1e">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Separator layoutX="630.0" layoutY="266.0" prefWidth="480.0" />
-      <Separator layoutX="630.0" layoutY="316.0" prefWidth="480.0" />
-      <Separator layoutX="630.0" layoutY="367.0" prefWidth="480.0" />
-      <Separator layoutX="630.0" layoutY="416.0" prefWidth="480.0" />
-      <Separator layoutX="630.0" layoutY="466.0" prefWidth="480.0" />
-      <Separator layoutX="630.0" layoutY="536.0" prefWidth="480.0" />
-      <Separator layoutX="630.0" layoutY="604.0" prefWidth="480.0" />
-      <Separator layoutX="857.0" layoutY="266.0" orientation="VERTICAL" prefHeight="50.0" />
-      <Separator layoutX="738.0" layoutY="316.0" orientation="VERTICAL" prefHeight="289.0" />
+      </HBox>
+
+      <!-- Cột phải: thông tin -->
+      <VBox layoutX="555.0" layoutY="143.0" prefHeight="348.0" prefWidth="284.0" spacing="10">
+         <Label fx:id="lbName" prefHeight="54.0" prefWidth="185.0" style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Tên sản phẩm" wrapText="true" />
+         <HBox spacing="10">
+            <Label style="-fx-font-size: 16px;" text="Giá:" />
+            <Label fx:id="lbPrice" style="-fx-font-size: 20px;" textFill="red" />
+         </HBox>
+
+         <GridPane hgap="10" vgap="10">
+            <Label text="Hệ điều hành:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Label fx:id="lbSystem" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label text="Chip:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <Label fx:id="lbChip" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Bộ nhớ:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Label fx:id="lbMemory" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Pin Sạc:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <Label fx:id="lbBattery" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label text="Màn hình:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <Label fx:id="lbScreen" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="Camera:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <Label fx:id="lbCamera" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
+         </GridPane>
+
+         <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label text="Số lượng:" />
+            <Spinner fx:id="Spinner" editable="true" prefWidth="80.0" />
+         </HBox>
+         <MFXButton fx:id="btnAddToCart" onAction="#btnAddToCartClick" prefWidth="200.0" style="-fx-background-color: #CCFF66;" text="🛒 Thêm vào giỏ hàng" />
+      </VBox>
+      <Button layoutX="555.0" layoutY="491.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="284.0" text="Button" />
+
    </children>
 </AnchorPane>

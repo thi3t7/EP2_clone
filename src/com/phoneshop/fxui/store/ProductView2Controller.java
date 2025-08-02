@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.phoneshop.dao.SmartPhone;
@@ -20,18 +21,19 @@ import com.phoneshop.fxui.Navigator;
 import com.phoneshop.model.UserName;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXComboBox;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.util.Duration;
 
 
 public class ProductView2Controller implements Initializable {
@@ -101,7 +103,34 @@ public class ProductView2Controller implements Initializable {
     private MFXButton btnCartClick;
 
     @FXML
-    private MFXComboBox<String> cbbMfg;
+    private Label topBannerText;
+
+    private int currentBannerIndex = 0;
+    private Timeline bannerTimeline;
+
+    private TranslateTransition marquee;
+
+
+    @FXML
+    private Button btnBannerLeft;
+
+    @FXML
+    private Button btnBannerRight;
+
+    // Danh sách câu slogan/banner
+    private List<String> bannerMessages = List.of(
+            "SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1900.2091",
+            "THU CŨ GIÁ CAO TOÀN BỘ SẢN PHẨM",
+            "MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC - HOÀN TIỀN 200% NẾU HÀNG GIẢ"
+    );
+
+    private final String[] bannerTexts = {
+            "SẢN PHẨM CHÍNH HÃNG",
+            "CAM KẾT LỖI ĐỔI LIỀN",
+            "HOTLINE 1900.2091",
+            "MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC"
+    };
+
 
     @FXML
     void HomeClick(ActionEvent event) throws IOException {
@@ -131,17 +160,20 @@ public class ProductView2Controller implements Initializable {
         UserName.search = searchBar.getText();
     }
     
-    @FXML
-    void cbbMfgClick(ActionEvent event) throws IOException {
-        UserName.sbb = cbbMfg.getValue().toString();
-        Navigator.getInstance().goToStore("");
-    }
+//    @FXML
+//    void cbbMfgClick(ActionEvent event) throws IOException {
+//        UserName.sbb = cbbMfg.getValue().toString();
+//        Navigator.getInstance().goToStore("");
+//    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // Khởi động banner chạy
+        topBannerText.setText(bannerMessages.get(currentBannerIndex));
+        startMarquee();
+
         txtUserName.setText(UserName.username);
-        cbbMfg.setItems(smartphonedao.selectmanu());
-        cbbMfg.setValue(UserName.sbb);
         int initialValue = 1;
         SpinnerValueFactory<Integer> valueFactory
                 = //
@@ -238,5 +270,42 @@ public class ProductView2Controller implements Initializable {
         Navigator.getInstance().goToShoppingCart(UserName.CartID);
     }
 
+    private void startMarquee() {
+        double bannerWidth = 1200; // Banner rộng 1200px
+        double textWidth = topBannerText.getText().length() * 7; // Ước tính độ dài text
 
+        marquee = new TranslateTransition(Duration.seconds(8), topBannerText);
+        marquee.setFromX(bannerWidth);
+        marquee.setToX(-textWidth);
+        marquee.setCycleCount(TranslateTransition.INDEFINITE);
+        marquee.play();
+    }
+
+    @FXML
+    private void onBannerLeftClick() {
+        marquee.pause();
+        marquee.setRate(-1); // Chạy ngược
+        marquee.play();
+    }
+
+    @FXML
+    private void onBannerRightClick() {
+        marquee.pause();
+        marquee.setRate(1); // Chạy thuận
+        marquee.play();
+    }
+
+    private void updateBannerText() {
+        topBannerText.setText(bannerTexts[currentBannerIndex]);
+        currentBannerIndex = (currentBannerIndex + 1) % bannerTexts.length;
+    }
+
+    private void startBannerAnimation() {
+        bannerTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(0), e -> updateBannerText()),
+                new KeyFrame(Duration.seconds(1.5))
+        );
+        bannerTimeline.setCycleCount(Animation.INDEFINITE);
+        bannerTimeline.play();
+    }
 }

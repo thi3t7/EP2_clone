@@ -16,7 +16,7 @@
    <VBox spacing="5" prefWidth="1200.0">
       <StackPane prefHeight="40" prefWidth="1200" style="-fx-background-color: #E6F7F4;">
          <!-- Chữ chạy -->
-         <Label fx:id="topBannerText" text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1900.2091"
+         <Label fx:id="topBannerText" text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1420.0420"
                 style="-fx-font-size: 14px; -fx-text-fill: #333;"
                 StackPane.alignment="CENTER_LEFT"/>
       </StackPane>
@@ -26,7 +26,7 @@
       <HBox layoutY="30.0" prefHeight="70.0" prefWidth="1200.0" spacing="20" alignment="CENTER_LEFT"
          style="-fx-background-color: #FFFFFF;">
       <!-- Logo -->
-         <ImageView fitHeight="60.0" preserveRatio="true" style="-fx-translate-x: 2;">
+         <ImageView layoutX="30" fitHeight="60" preserveRatio="true" style="-fx-translate-x: 2;">
             <image>
                <Image url="@/images/logo6.png" />
             </image>
@@ -45,15 +45,20 @@
 
          <MFXButton fx:id="btnSearch" text="Tìm kiếm" onAction="#btnSearchClick"/>
 
-      <!-- Spacer -->
-      <Pane HBox.hgrow="ALWAYS"/>
-
-      <!-- Tài khoản -->
-      <Label fx:id="txtUserName" text="Tên người dùng" style="-fx-font-size: 14px;"/>
-
       <!-- Giỏ hàng -->
-      <MFXButton fx:id="btnCart" text="🛒" onAction="#btnCartClick"/>
+         <MFXButton fx:id="btnCart" text="Gio Hang" onAction="#btnCartClick" />
 
+         <!-- Tài khoản -->
+         <HBox alignment="CENTER_LEFT" spacing="5">
+            <ImageView fitHeight="30" fitWidth="30">
+               <image>
+                  <Image url="@/images/user.png"/>
+               </image>
+            </ImageView>
+            <Label fx:id="txtUserName" text=""/>
+         </HBox>
+
+         <MFXButton fx:id="btnLogOut" text="Log Out" onAction="#btnLogOut"/>
    </HBox>
 
       <!-- Sort bar -->
