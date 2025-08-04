@@ -4,77 +4,230 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.FontWeight?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.paint.Color?>
 <?import io.github.palexdev.materialfx.controls.*?>
 <?import io.github.palexdev.materialfx.font.MFXFontIcon?>
 
 <?import javafx.geometry.Insets?>
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171"
+<AnchorPane xmlns="http://javafx.com/javafx/24.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.phoneshop.fxui.store.StoreUIController"
-            prefHeight="800.0" prefWidth="1200.0">
+            prefHeight="800.0" prefWidth="1200.0"
+            style="-fx-background-color: linear-gradient(to bottom, #f8f9fa, #e9ecef);">
 
-   <VBox spacing="5" prefWidth="1200.0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
-      <StackPane prefHeight="40" prefWidth="1200" style="-fx-background-color: #E6F7F4;">
-         <Label fx:id="topBannerText" text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1900.2091"
-                style="-fx-font-size: 14px; -fx-text-fill: #333;"
-                StackPane.alignment="CENTER_LEFT"/>
-      </StackPane>
+   <!-- Main Grid Layout -->
+   <GridPane fx:id="mainGrid" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" 
+             AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" hgap="0" vgap="0">
+      
+      <!-- Header Row -->
+      <VBox fx:id="headerContainer" spacing="0" GridPane.rowIndex="0" GridPane.columnIndex="0"
+            GridPane.columnSpan="2">
+         
+         <!-- Top Banner -->
+         <StackPane prefHeight="45" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%);">
+            <Label fx:id="topBannerText" 
+                   text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1900.2091"
+                   style="-fx-font-size: 14px; -fx-text-fill: white; -fx-font-weight: bold;"
+                   StackPane.alignment="CENTER_LEFT"/>
+         </StackPane>
 
-      <HBox layoutY="30.0" prefHeight="70.0" prefWidth="1200.0" spacing="20" alignment="CENTER_LEFT"
-            style="-fx-background-color: #FFFFFF;">
-         <ImageView fitHeight="60.0" preserveRatio="true" style="-fx-translate-x: 2;">
-            <image>
-               <Image url="@/images/logo6.png" />
-            </image>
-         </ImageView>
-         <TextField fx:id="searchBar"
-                    prefWidth="600.0"
-                    promptText=" Tìm kiếm sản phẩm, hãng sản xuất,..."
-                    style="
-               -fx-font-size: 16px;
-               -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
-               -fx-font-style: italic;">
-         </TextField>
-         <MFXButton fx:id="btnSearch" text="Tìm kiếm" onAction="#btnSearchClick"/>
-         <Pane HBox.hgrow="ALWAYS"/>
-         <Label fx:id="txtUserName" text="" style="-fx-font-size: 14px;"/>
-         <MFXButton fx:id="btnCart" text="gio hang" onAction="#btnCartClick"/>
-      </HBox>
+         <!-- Main Header với 3 cột -->
+         <HBox prefHeight="80.0" alignment="CENTER" 
+               style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+            
+            <!-- Cột trái: Logo -->
+            <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 40;" HBox.hgrow="NEVER">
+               <ImageView fitHeight="65" preserveRatio="true">
+                  <image>
+                     <Image url="@/images/logo6.png" />
+                  </image>
+               </ImageView>
+            </HBox>
 
-      <!-- Banner -->
-      <HBox alignment="CENTER" spacing="20" prefHeight="200.0" style="-fx-background-color: #F0F0F0;">
-         <MFXButton fx:id="btnPrev" text="⬅" onAction="#prevBannerImage" prefWidth="40" visible="true" />
-         <ImageView fx:id="bannerImage" fitHeight="180.0" preserveRatio="true" fitWidth="800.0">
-            <image>
-               <Image url="@/images/banner1.jpg" />
-            </image>
-         </ImageView>
-         <MFXButton fx:id="btnNext" text="➡" onAction="#nextBannerImage" prefWidth="40" visible="true" />
-      </HBox>
+            <!-- Cột giữa: Search -->
+            <HBox alignment="CENTER" spacing="15" HBox.hgrow="ALWAYS">
+               <TextField fx:id="searchBar"
+                          prefWidth="400.0"
+                          promptText="🔍 Tìm kiếm sản phẩm, hãng sản xuất,..."
+                          style="
+                              -fx-font-size: 16px;
+                              -fx-prompt-text-fill: #9ca3af;
+                              -fx-background-color: #f3f4f6;
+                              -fx-background-radius: 25;
+                              -fx-border-radius: 25;
+                              -fx-border-color: #e5e7eb;
+                              -fx-border-width: 1;
+                              -fx-padding: 12 20;
+                              -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);">
+               </TextField>
 
-      <!-- Sort bar -->
-      <HBox spacing="15" style="-fx-background-color: #E1E1E1;" prefHeight="50.0">
+               <MFXButton fx:id="btnSearch" 
+                          text="Tìm kiếm" 
+                          onAction="#btnSearchClick"
+                          style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); 
+                                 -fx-text-fill: white; 
+                                 -fx-font-weight: bold;
+                                 -fx-background-radius: 25;
+                                 -fx-padding: 12 25;
+                                 -fx-effect: dropshadow(gaussian, rgba(102,126,234,0.3), 8, 0, 0, 2);"/>
+            </HBox>
+
+            <!-- Cột phải: User, Cart -->
+            <HBox alignment="CENTER_RIGHT" spacing="20" style="-fx-padding: 0 40;" HBox.hgrow="NEVER">
+               
+               <!-- User Section -->
+               <HBox alignment="CENTER_LEFT" spacing="8">
+                  <ImageView fitHeight="32" fitWidth="32" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1);">
+                     <image>
+                        <Image url="@/images/user.png"/>
+                     </image>
+                  </ImageView>
+                  <Label fx:id="txtUserName" text="" 
+                         style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #374151;"/>
+               </HBox>
+
+               <!-- Cart Button -->
+               <MFXButton fx:id="btnCart" 
+                          text="🛒 Giỏ hàng" 
+                          onAction="#btnCartClick"
+                          style="-fx-background-color: linear-gradient(to right, #10b981 0%, #059669 100%); 
+                                 -fx-text-fill: white; 
+                                 -fx-font-weight: bold;
+                                 -fx-background-radius: 20;
+                                 -fx-padding: 10 20;
+                                 -fx-effect: dropshadow(gaussian, rgba(16,185,129,0.3), 6, 0, 0, 2);"/>
+            </HBox>
+         </HBox>
+      </VBox>
+
+      <!-- Banner Row -->
+      <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" 
+            style="-fx-padding: 20; -fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2);">
+         
+         <!-- Banner Container -->
+         <HBox alignment="CENTER" spacing="20" prefHeight="200.0" 
+               style="-fx-background-color: #f8f9fa; -fx-background-radius: 15; -fx-padding: 20;">
+            
+            <!-- Previous Button -->
+            <MFXButton fx:id="btnPrev" 
+                       text="⬅" 
+                       onAction="#prevBannerImage" 
+                       prefWidth="50" 
+                       prefHeight="50"
+                       visible="true"
+                       style="-fx-background-color: rgba(255,255,255,0.8); 
+                              -fx-text-fill: #374151; 
+                              -fx-font-weight: bold;
+                              -fx-font-size: 18px;
+                              -fx-background-radius: 25;
+                              -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);" />
+            
+            <!-- Banner Image -->
+            <ImageView fx:id="bannerImage" 
+                       fitHeight="180.0" 
+                       preserveRatio="true" 
+                       fitWidth="800.0"
+                       style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);">
+               <image>
+                  <Image url="@/images/banner1.jpg" />
+               </image>
+            </ImageView>
+            
+            <!-- Next Button -->
+            <MFXButton fx:id="btnNext" 
+                       text="➡" 
+                       onAction="#nextBannerImage" 
+                       prefWidth="50" 
+                       prefHeight="50"
+                       visible="true"
+                       style="-fx-background-color: rgba(255,255,255,0.8); 
+                              -fx-text-fill: #374151; 
+                              -fx-font-weight: bold;
+                              -fx-font-size: 18px;
+                              -fx-background-radius: 25;
+                              -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);" />
+         </HBox>
+      </VBox>
+
+      <!-- Sort Bar Row -->
+      <HBox GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2"
+            spacing="15" 
+            style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);" 
+            prefHeight="60.0" 
+            alignment="CENTER_LEFT">
          <padding>
-            <Insets top="10" right="10" bottom="10" left="10"/>
+            <Insets top="15" right="40" bottom="15" left="40"/>
          </padding>
          <children>
-            <Label text="Sắp xếp theo:" style="-fx-font-weight: bold;"/>
-            <MFXButton text="Liên quan" onAction="#onSortRelevant"/>
-            <MFXButton text="Mới nhất" onAction="#onSortNewest"/>
-            <MFXButton text="Bán chạy" onAction="#onSortBestSeller"/>
-            <MFXButton text="Giá tăng dần" onAction="#onSortPriceAsc"/>
-            <MFXButton text="Giá giảm dần" onAction="#onSortPriceDesc"/>
+            <Label text="Sắp xếp theo:" 
+                   style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #374151;"/>
+            <MFXButton text="Liên quan" 
+                       onAction="#onSortRelevant"
+                       style="-fx-background-color: #f3f4f6; 
+                              -fx-text-fill: #374151; 
+                              -fx-font-weight: 600;
+                              -fx-background-radius: 20;
+                              -fx-padding: 8 16;"/>
+            <MFXButton text="Mới nhất" 
+                       onAction="#onSortNewest"
+                       style="-fx-background-color: #f3f4f6; 
+                              -fx-text-fill: #374151; 
+                              -fx-font-weight: 600;
+                              -fx-background-radius: 20;
+                              -fx-padding: 8 16;"/>
+            <MFXButton text="Bán chạy" 
+                       onAction="#onSortBestSeller"
+                       style="-fx-background-color: #f3f4f6; 
+                              -fx-text-fill: #374151; 
+                              -fx-font-weight: 600;
+                              -fx-background-radius: 20;
+                              -fx-padding: 8 16;"/>
+            <MFXButton text="Giá tăng dần" 
+                       onAction="#onSortPriceAsc"
+                       style="-fx-background-color: #f3f4f6; 
+                              -fx-text-fill: #374151; 
+                              -fx-font-weight: 600;
+                              -fx-background-radius: 20;
+                              -fx-padding: 8 16;"/>
+            <MFXButton text="Giá giảm dần" 
+                       onAction="#onSortPriceDesc"
+                       style="-fx-background-color: #f3f4f6; 
+                              -fx-text-fill: #374151; 
+                              -fx-font-weight: 600;
+                              -fx-background-radius: 20;
+                              -fx-padding: 8 16;"/>
          </children>
       </HBox>
-   </VBox>
 
-   <!-- Sản phẩm -->
-   <ScrollPane AnchorPane.topAnchor="360.0" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
-      <TilePane fx:id="GpPhone" prefColumns="4" hgap="20" vgap="20">
-         <padding>
-            <Insets top="20" right="20" bottom="20" left="20"/>
-         </padding>
-      </TilePane>
-   </ScrollPane>
+      <!-- Products Row -->
+      <ScrollPane GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2"
+                  style="-fx-background-color: transparent; -fx-background-radius: 0;"
+                  fitToWidth="true" fitToHeight="true">
+         <TilePane fx:id="GpPhone" 
+                   prefColumns="4" 
+                   hgap="20" 
+                   vgap="20"
+                   style="-fx-background-color: transparent;">
+            <padding>
+               <Insets top="30" right="40" bottom="30" left="40"/>
+            </padding>
+         </TilePane>
+      </ScrollPane>
+
+      <!-- Grid Constraints -->
+      <rowConstraints>
+         <RowConstraints prefHeight="125" minHeight="125" />
+         <RowConstraints prefHeight="240" minHeight="200" />
+         <RowConstraints prefHeight="60" minHeight="60" />
+         <RowConstraints vgrow="ALWAYS" />
+      </rowConstraints>
+      <columnConstraints>
+         <ColumnConstraints hgrow="ALWAYS" />
+      </columnConstraints>
+   </GridPane>
 
 </AnchorPane>
