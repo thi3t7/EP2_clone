@@ -74,23 +74,27 @@ public class ProductInfoController implements Initializable {
 
     public void setData(SmartPhone smartphone) {
         try {
-            String imageName = smartphonedao.SelectImg(smartphone.getProductID().toString());  // ví dụ: "vsmart-active-3-6gb.jpg"
-            String imagePath = "images/" + imageName;
-            System.out.println("image path: " + imagePath);
+            String imageName = smartphonedao.SelectImg(smartphone.getProductID().toString());  // e.g., "vsmart.jpg"
+            if (imageName == null || imageName.isEmpty()) {
+                System.err.println("⚠ Không có tên ảnh từ DB!");
+                return;
+            }
 
-            InputStream is = getClass().getClassLoader().getResourceAsStream(imagePath);
+            String imagePath = "/images/" + imageName;
+            System.out.println("🖼️ Đang load ảnh từ: " + imagePath);
 
+            InputStream is = getClass().getResourceAsStream(imagePath);
             if (is == null) {
-                System.out.println("⚠ Ảnh không tồn tại trong resource: " + imagePath);
+                System.err.println("⚠ Ảnh không tồn tại trong resource: " + imagePath);
                 return;
             }
 
             Image imageFile = new Image(is);
             image.setImage(imageFile);
-            manufacturer.setText("Hãng: " + smartphone.getMfgName()); // ví dụ nếu bạn có mfgName từ SQL
+            manufacturer.setText("Hãng: " + smartphone.getMfgName());
             name.setText(smartphone.getName());
             price.setText(smartphone.getPrice() + "$");
-            total_price.setText(Integer.toString(Integer.parseInt(smartphone.getPrice()) * smartphone.getAmount()) + "$");
+            total_price.setText((Integer.parseInt(smartphone.getPrice()) * smartphone.getAmount()) + "$");
 
         } catch (Exception e) {
             e.printStackTrace();

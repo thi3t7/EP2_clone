@@ -37,8 +37,8 @@
          </TextField>
          <MFXButton fx:id="btnSearch" text="Tìm kiếm" onAction="#btnSearchClick"/>
          <Pane HBox.hgrow="ALWAYS"/>
-         <Label fx:id="txtUserName" text="Tên người dùng" style="-fx-font-size: 14px;"/>
-         <MFXButton fx:id="btnCart" text="🛒" onAction="#btnCartClick"/>
+         <Label fx:id="txtUserName" text="" style="-fx-font-size: 14px;"/>
+         <MFXButton fx:id="btnCart" text="gio hang" onAction="#btnCartClick"/>
       </HBox>
 
       <!-- Banner -->
