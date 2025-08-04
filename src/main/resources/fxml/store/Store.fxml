@@ -13,26 +13,20 @@
             fx:controller="com.phoneshop.fxui.store.StoreUIController"
             prefHeight="800.0" prefWidth="1200.0">
 
-   <VBox spacing="5" prefWidth="1200.0">
+   <VBox spacing="5" prefWidth="1200.0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
       <StackPane prefHeight="40" prefWidth="1200" style="-fx-background-color: #E6F7F4;">
-         <!-- Chữ chạy -->
-         <Label fx:id="topBannerText" text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1420.0420"
+         <Label fx:id="topBannerText" text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1900.2091"
                 style="-fx-font-size: 14px; -fx-text-fill: #333;"
                 StackPane.alignment="CENTER_LEFT"/>
       </StackPane>
 
-
-
       <HBox layoutY="30.0" prefHeight="70.0" prefWidth="1200.0" spacing="20" alignment="CENTER_LEFT"
-         style="-fx-background-color: #FFFFFF;">
-      <!-- Logo -->
-         <ImageView layoutX="30" fitHeight="60" preserveRatio="true" style="-fx-translate-x: 2;">
+            style="-fx-background-color: #FFFFFF;">
+         <ImageView fitHeight="60.0" preserveRatio="true" style="-fx-translate-x: 2;">
             <image>
                <Image url="@/images/logo6.png" />
             </image>
          </ImageView>
-
-      <!-- Thanh tìm kiếm -->
          <TextField fx:id="searchBar"
                     prefWidth="600.0"
                     promptText=" Tìm kiếm sản phẩm, hãng sản xuất,..."
@@ -41,29 +35,25 @@
                -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%);
                -fx-font-style: italic;">
          </TextField>
-
-
          <MFXButton fx:id="btnSearch" text="Tìm kiếm" onAction="#btnSearchClick"/>
+         <Pane HBox.hgrow="ALWAYS"/>
+         <Label fx:id="txtUserName" text="Tên người dùng" style="-fx-font-size: 14px;"/>
+         <MFXButton fx:id="btnCart" text="🛒" onAction="#btnCartClick"/>
+      </HBox>
 
-      <!-- Giỏ hàng -->
-         <MFXButton fx:id="btnCart" text="Gio Hang" onAction="#btnCartClick" />
-
-         <!-- Tài khoản -->
-         <HBox alignment="CENTER_LEFT" spacing="5">
-            <ImageView fitHeight="30" fitWidth="30">
-               <image>
-                  <Image url="@/images/user.png"/>
-               </image>
-            </ImageView>
-            <Label fx:id="txtUserName" text=""/>
-         </HBox>
-
-         <MFXButton fx:id="btnLogOut" text="Log Out" onAction="#btnLogOut"/>
-   </HBox>
+      <!-- Banner -->
+      <HBox alignment="CENTER" spacing="20" prefHeight="200.0" style="-fx-background-color: #F0F0F0;">
+         <MFXButton fx:id="btnPrev" text="⬅" onAction="#prevBannerImage" prefWidth="40" visible="true" />
+         <ImageView fx:id="bannerImage" fitHeight="180.0" preserveRatio="true" fitWidth="800.0">
+            <image>
+               <Image url="@/images/banner1.jpg" />
+            </image>
+         </ImageView>
+         <MFXButton fx:id="btnNext" text="➡" onAction="#nextBannerImage" prefWidth="40" visible="true" />
+      </HBox>
 
       <!-- Sort bar -->
-      <!-- Sort bar -->
-      <HBox spacing="15" style="-fx-background-color: #E1E1E1;">
+      <HBox spacing="15" style="-fx-background-color: #E1E1E1;" prefHeight="50.0">
          <padding>
             <Insets top="10" right="10" bottom="10" left="10"/>
          </padding>
@@ -79,13 +69,12 @@
    </VBox>
 
    <!-- Sản phẩm -->
-   <ScrollPane AnchorPane.topAnchor="210" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+   <ScrollPane AnchorPane.topAnchor="360.0" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
       <TilePane fx:id="GpPhone" prefColumns="4" hgap="20" vgap="20">
          <padding>
             <Insets top="20" right="20" bottom="20" left="20"/>
          </padding>
       </TilePane>
    </ScrollPane>
-
 
 </AnchorPane>
