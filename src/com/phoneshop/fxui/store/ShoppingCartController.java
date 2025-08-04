@@ -6,7 +6,6 @@ import com.phoneshop.dao.SmartPhoneDAOImp;
 import com.phoneshop.fxui.Navigator;
 import com.phoneshop.model.UserName;
 import io.github.palexdev.materialfx.controls.MFXButton;
-import io.github.palexdev.materialfx.controls.MFXComboBox;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -17,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
@@ -32,40 +32,27 @@ public class ShoppingCartController implements Initializable {
 
     @FXML private TextField searchBar;
     @FXML private Label txtUserName;
-    @FXML private MFXComboBox<String> cbbMfg;
     @FXML private GridPane GpPhone;
+    @FXML private ImageView Img;
     @FXML private Label total_all;
     @FXML private MFXButton btnOrder;
-    @FXML
-    private VBox cartList;
-
-    @FXML
-    private Label totalLabel;
-
-    @FXML
-    private MFXButton btnBack;
-
-    @FXML
-    private MFXButton btnLogout;
-
-    @FXML
-    private Label topBannerText;
-
-
-
+    @FXML private VBox cartList;
+    @FXML private Label totalLabel;
+    @FXML private MFXButton btnBack;
+    @FXML private MFXButton btnLogout;
+    @FXML private Label topBannerText;
 
     private final SimpleIntegerProperty total = new SimpleIntegerProperty(0);
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         txtUserName.setText(UserName.username);
-        cbbMfg.setItems(smartphoneDAO.selectmanu());
-        cbbMfg.setValue(UserName.sbb);
+        System.out.println("🛒 Cart ID: " + UserName.CartID); // Kiểm tra có cartID không
 
-        // Cập nhật tổng tiền khi biến total thay đổi
-        total.addListener((obs, oldVal, newVal) -> total_all.setText("Tổng tiền: " + newVal + " $"));
+        total.addListener((obs, oldVal, newVal) ->
+                total_all.setText("Tổng tiền: " + newVal + " $")
+        );
 
-        // Load giỏ hàng
         loadCartItems(UserName.CartID);
     }
 
@@ -76,14 +63,13 @@ public class ShoppingCartController implements Initializable {
 
         try {
             for (SmartPhone phone : items) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("ProductInfo.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/store/ProductInfo.fxml"));
                 AnchorPane pane = loader.load();
 
                 ProductInfoController ctrl = loader.getController();
                 ctrl.setData(phone);
                 ctrl.initialize(phone.getAmount());
 
-                // Theo dõi số lượng sản phẩm
                 ctrl.amount.valueProperty().addListener((obs, oldVal, newVal) -> {
                     if (ctrl.checkbox.isSelected()) {
                         int price = parsePrice(ctrl.price.getText());
@@ -93,15 +79,16 @@ public class ShoppingCartController implements Initializable {
                     }
                 });
 
-                // Theo dõi checkbox chọn sản phẩm
-                ctrl.checkbox.selectedProperty().addListener((ObservableValue<? extends Boolean> obs, Boolean oldVal, Boolean newVal) -> {
-                    int itemTotal = parsePrice(ctrl.total_price.getText());
-                    if (newVal) {
-                        total.set(total.get() + itemTotal);
-                    } else {
-                        total.set(total.get() - itemTotal);
-                    }
-                });
+                ctrl.checkbox.selectedProperty().addListener(
+                        (ObservableValue<? extends Boolean> obs, Boolean oldVal, Boolean newVal) -> {
+                            int itemTotal = parsePrice(ctrl.total_price.getText());
+                            if (newVal) {
+                                total.set(total.get() + itemTotal);
+                            } else {
+                                total.set(total.get() - itemTotal);
+                            }
+                        }
+                );
 
                 GpPhone.add(pane, 0, row++);
                 GridPane.setMargin(pane, new Insets(5, 40, 5, 40));
@@ -126,21 +113,14 @@ public class ShoppingCartController implements Initializable {
 
     @FXML
     private void btnSearchClick(ActionEvent e) throws IOException {
-        UserName.sbb = "";
         UserName.search = searchBar.getText();
         Navigator.getInstance().goToStore(UserName.search);
     }
 
     @FXML
-    private void cbbMfgClick(ActionEvent e) throws IOException {
-        UserName.sbb = cbbMfg.getValue();
-        Navigator.getInstance().goToStore("");
-    }
-
-    @FXML
     private void btnOrderClick(ActionEvent e) {
         smartphoneDAO.ordered(UserName.CartID);
-        // Gợi ý: có thể thêm xác nhận thành công ở đây
+        // Gợi ý: thêm hộp thoại xác nhận thành công tại đây
     }
 
     @FXML
@@ -164,10 +144,10 @@ public class ShoppingCartController implements Initializable {
 
     @FXML
     private void btnLogOut(ActionEvent e) throws IOException {
-        UserName.sbb = "";
         Navigator.getInstance().goToLogin();
     }
 
     public void initialize(int cartId) {
+        // Phương thức overload nếu Navigator cần truyền cartId
     }
 }

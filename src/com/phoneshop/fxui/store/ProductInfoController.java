@@ -44,6 +44,8 @@ public class ProductInfoController implements Initializable {
     @FXML
     Label total_price;
     @FXML
+    private Label manufacturer;
+    @FXML
     private MFXButton deleteBtn;
     @FXML
     CheckBox checkbox;
@@ -85,7 +87,7 @@ public class ProductInfoController implements Initializable {
 
             Image imageFile = new Image(is);
             image.setImage(imageFile);
-
+            manufacturer.setText("Hãng: " + smartphone.getMfgName()); // ví dụ nếu bạn có mfgName từ SQL
             name.setText(smartphone.getName());
             price.setText(smartphone.getPrice() + "$");
             total_price.setText(Integer.toString(Integer.parseInt(smartphone.getPrice()) * smartphone.getAmount()) + "$");

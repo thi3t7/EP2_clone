@@ -57,7 +57,7 @@ public interface SmartPhoneDAO {
 
     public boolean updateCart(int cart, int id, int amount);
 
-    public boolean addamountifexit(int cart, int id);
+    public boolean isProductInCart(int cart, int id);
 
     public ObservableList<SmartPhone> selectAllCart(int cartID);
     

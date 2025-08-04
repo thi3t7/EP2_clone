@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.net.URL?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
@@ -9,39 +7,69 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
-<AnchorPane id="AnchorPane" prefHeight="140.0" prefWidth="1050.0" styleClass="item" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoneshop.fxui.store.ProductInfoController">
+
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<AnchorPane id="AnchorPane" prefHeight="150.0" prefWidth="1100.0" styleClass="item"
+            xmlns="http://javafx.com/javafx/8.0.171"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.phoneshop.fxui.store.ProductInfoController">
+
     <stylesheets>
-        <URL value="../Css/FxmlCss.css" />
-    </stylesheets> 
-    
-    <children>
-        <ImageView fx:id="image" fitHeight="126.0" fitWidth="159.0" layoutX="47.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-        <Label fx:id="name" layoutX="214.0" layoutY="28.0" prefHeight="75.0" prefWidth="159.0" text="Tên" textFill="#055b1e" wrapText="true">
+        <!-- <URL value="@/fxml/Css/FxmlCss.css" /> -->
+    </stylesheets>
+
+     <HBox layoutX="40.0" layoutY="100.0" spacing="40.0" AnchorPane.bottomAnchor="20.0">
+        <!-- Hình ảnh sản phẩm -->
+        <ImageView fx:id="image" fitHeight="120.0" fitWidth="120.0"
+                   layoutX="30.0" layoutY="15.0" preserveRatio="true" />
+
+        <!-- Check box -->
+        <CheckBox fx:id="checkbox" layoutX="10.0" layoutY="65.0" prefWidth="20.0" prefHeight="20.0" />
+
+        <!-- Tên sản phẩm -->
+        <Label fx:id="name" layoutX="170.0" layoutY="20.0" prefWidth="200.0" prefHeight="40.0" wrapText="true"
+               text="Tên sản phẩm" textFill="#055b1e">
             <font>
-                <Font size="16.0" />
+                <Font size="16.0"/>
             </font>
         </Label>
-        <Label fx:id="price" layoutX="401.0" layoutY="47.0" prefHeight="36.0" prefWidth="100.0" text="Giá" textFill="#055b1e" wrapText="true">
+
+        <!-- Hãng sản xuất -->
+        <Label fx:id="manufacturer" layoutX="170.0" layoutY="65.0" prefWidth="200.0" prefHeight="25.0"
+               text="Hãng: Apple" textFill="#2F4F4F">
             <font>
-                <Font size="16.0" />
+                <Font size="14.0"/>
             </font>
         </Label>
-        <Spinner fx:id="amount" layoutX="546.0" layoutY="48.0" prefHeight="36.0" prefWidth="100.0" />
-        <Label fx:id="total_price" layoutX="752.0" layoutY="47.0" prefHeight="36.0" prefWidth="80.0" text="Tổng tiền" textFill="#055b1e">
+
+        <!-- Giá sản phẩm -->
+        <Label fx:id="price" layoutX="390.0" layoutY="45.0" prefWidth="80.0" prefHeight="25.0"
+               textFill="#055b1e">
             <font>
-                <Font size="16.0" />
+                <Font size="16.0"/>
             </font>
         </Label>
-        <MFXButton fx:id="deleteBtn" layoutX="894.0" layoutY="46.0" onAction="#deleteBtnClick" prefHeight="43.0" prefWidth="89.0" style="-fx-background-color: #DDDDDD;" text="Xóa" textFill="#055b1e">
+
+        <!-- Số lượng (Spinner) -->
+        <Spinner fx:id="amount" layoutX="500.0" layoutY="45.0" prefWidth="90.0" prefHeight="30.0"/>
+
+        <!-- Tổng tiền -->
+        <Label fx:id="total_price" layoutX="620.0" layoutY="45.0" prefWidth="80.0" prefHeight="25.0"
+                textFill="#055b1e">
             <font>
-                <Font size="16.0" />
+                <Font size="16.0"/>
             </font>
-         <graphic>
-            <FontAwesomeIconView fill="#055b1e" glyphName="TRASH" size="30" />
-         </graphic>
+        </Label>
+
+        <!-- Nút xóa -->
+        <MFXButton fx:id="deleteBtn" layoutX="730.0" layoutY="42.0" prefWidth="80.0" prefHeight="36.0"
+                   text="Xóa" textFill="#055b1e" style="-fx-background-color: #DDDDDD;"
+                   onAction="#deleteBtnClick">
+            <font>
+                <Font size="14.0"/>
+            </font>
         </MFXButton>
-        <CheckBox fx:id="checkbox" layoutX="24.0" layoutY="57.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" />
-    </children>
+    </HBox>
 </AnchorPane>

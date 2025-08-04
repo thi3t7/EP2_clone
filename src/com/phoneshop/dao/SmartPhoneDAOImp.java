@@ -557,58 +557,76 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
         return amount;
     }
 
-    public boolean updateCart(int cart, int id, int amount) {
-        String sql = "UPDATE cart_detail set"
-                + "`amount` ='" + amount + "'"
-                + "WHERE `cartID` = '" + cart + "'" + "AND `productID` = '" + id + "'";
-
-        try (
-                Connection conn = DbFactory.getConnection(database);
-                PreparedStatement stmt = conn.prepareStatement(sql);) {
-
-            int rowUpdate = stmt.executeUpdate();
-
-            if (rowUpdate == 1) {
-                return true;
-            } else {
-                System.out.println("No cart updated");
-                return false;
-            }
+    public boolean updateCart(int cartId, int productId, int newAmount) {
+        String sql = "UPDATE cart_detail SET amount = ? WHERE cartID = ? AND productID = ?";
+        try (Connection conn = DbFactory.getConnection(database);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, newAmount);
+            stmt.setInt(2, cartId);
+            stmt.setInt(3, productId);
+            return stmt.executeUpdate() == 1;
         } catch (Exception e) {
-            System.err.println(e.getMessage() + ": update Cart");
+            System.err.println("❌ updateCart: " + e.getMessage());
             return false;
         }
     }
 
-    public boolean addamountifexit(int cart, int id) {
-        try (
-                Connection conn = DbFactory.getConnection(database);
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT `amount` FROM cart_detail WHERE `cartID` = '" + cart + "'" + "AND `productID` = '" + id + "'");) {
-            while (rs.next()) {
-                return true;
-            }
+
+    public boolean isProductInCart(int cartId, int productId) {
+        String sql = "SELECT 1 FROM cart_detail WHERE cartID = ? AND productID = ?";
+        try (Connection conn = DbFactory.getConnection(database);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, cartId);
+            stmt.setInt(2, productId);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next(); // true nếu có bản ghi
         } catch (Exception e) {
-            System.err.println(e.getMessage() + " SelectAmount");
+            System.err.println("❌ isProductInCart: " + e.getMessage());
             return false;
         }
-
-        return false;
     }
+
 
     public ObservableList<SmartPhone> selectAllCart(int cartID) {
-        ObservableList product = FXCollections.observableArrayList();
+        ObservableList<SmartPhone> product = FXCollections.observableArrayList();
+        String sql = "SELECT \n" +
+                "    p.productID,\n" +
+                "    p.mfgID,           -- dòng này để tránh lỗi\n" +
+                "    p.name,\n" +
+                "    p.price,\n" +
+                "    p.chip,\n" +
+                "    p.memory,\n" +
+                "    p.screen,\n" +
+                "    p.system,\n" +
+                "    p.camera,\n" +
+                "    p.battery,\n" +
+                "    cd.amount,\n" +
+                "    img.link AS imageLink\n" +
+                "FROM cart_detail cd\n" +
+                "JOIN product p ON cd.productID = p.productID\n" +
+                "LEFT JOIN (\n" +
+                "    SELECT i1.productID, i1.link\n" +
+                "    FROM image i1\n" +
+                "    JOIN (\n" +
+                "        SELECT productID, MIN(imgID) AS minImgID\n" +
+                "        FROM image\n" +
+                "        GROUP BY productID\n" +
+                "    ) i2 ON i1.productID = i2.productID AND i1.imgID = i2.minImgID\n" +
+                ") img ON p.productID = img.productID\n" +
+                "WHERE cd.cartID = ?;\n";
         try (
                 Connection conn = DbFactory.getConnection(database);
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM cart_detail JOIN product ON cart_detail.productID = product.productID"
-                        + " WHERE `cartID` = '" + cartID + "'");) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+        ) {
+            stmt.setInt(1, cartID);
+            ResultSet rs = stmt.executeQuery();
+
             while (rs.next()) {
                 SmartPhone s = new SmartPhone();
                 s.setProductID(rs.getInt("productID"));
-                s.setMfgName(rs.getString("mfgName"));
                 s.setMfgID(rs.getInt("mfgID"));
-                s.setName(rs.getString("productName"));
+                s.setMfgName(rs.getString("name"));  // ✅ Bây giờ sẽ có mfgName
+                s.setName(rs.getString("name"));
                 s.setPrice(rs.getString("price"));
                 s.setScreen(rs.getString("screen"));
                 s.setSystem(rs.getString("system"));
@@ -616,20 +634,20 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
                 s.setChip(rs.getString("chip"));
                 s.setMemory(rs.getString("memory"));
                 s.setBattery(rs.getString("battery"));
+                s.setAmount(rs.getInt("amount"));
 
-                // ✅ Gọi ảnh từ bảng image
                 int productId = s.getProductID();
-                java.util.List<String> imageLinks = imageDAO.getImagesByProductID(productId);
-                s.setImageLinks(imageLinks);
+                s.setImageLinks(imageDAO.getImagesByProductID(productId));
 
                 product.add(s);
             }
         } catch (Exception e) {
-            System.err.println(e.getMessage() + " SelectAmount");
+            System.err.println(e.getMessage() + " SelectAllCart");
         }
 
         return product;
     }
+
 
     public boolean ordered(int id) {
         String sql = "INSERT INTO `order`(CartID, `Date`)"

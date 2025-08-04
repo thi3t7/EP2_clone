@@ -243,20 +243,37 @@ public class ProductView2Controller implements Initializable {
 
 
     @FXML
-    private void btnAddToCartClick(ActionEvent event) throws IOException {
+    private void btnAddToCartClick(ActionEvent event) {
         try {
-            if (!smartphonedao.addamountifexit(UserName.CartID, UserName.id)) {
-                smartphonedao.addtocartdetail(UserName.CartID, UserName.id, Spinner.getValue());
-                warning4();
+            int cartID = UserName.CartID;
+            int productID = UserName.id;
+            int amount = Spinner.getValue();
+
+            if (smartphonedao.isProductInCart(cartID, productID)) {
+                // Sản phẩm đã có -> cập nhật số lượng
+                int currentAmount = smartphonedao.selectAmount(cartID, productID);
+                boolean updated = smartphonedao.updateCart(cartID, productID, currentAmount + amount);
+                if (updated) {
+                    warning4(); // Hiển thị thông báo
+                } else {
+                    System.out.println("❌ Cập nhật giỏ hàng thất bại.");
+                }
             } else {
-                int newamount = smartphonedao.selectAmount(UserName.CartID, UserName.id);
-                smartphonedao.updateCart(UserName.CartID, UserName.id, newamount + Spinner.getValue());
-                warning4();
-            };
+                // Sản phẩm chưa có -> thêm mới
+                boolean inserted = smartphonedao.addtocartdetail(cartID, productID, amount);
+                if (inserted) {
+                    warning4(); // Hiển thị thông báo
+                } else {
+                    System.out.println("❌ Thêm vào giỏ hàng thất bại.");
+                }
+            }
+
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("❌ Lỗi khi thêm vào giỏ hàng: " + e.getMessage());
         }
     }
+
+
 
     private void warning4() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

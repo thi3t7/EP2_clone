@@ -11,15 +11,15 @@
 
    <children>
 
-      <!-- ✅ HEADER (Dán nguyên đoạn bạn gửi vào đây) -->
-      <VBox spacing="5.0" prefWidth="1200.0">
+      <!-- ✅ HEADER -->
+      <VBox fx:id="headerBox" spacing="5.0" prefWidth="1200.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <StackPane prefHeight="40" prefWidth="1200" style="-fx-background-color: #E6F7F4;">
             <Label fx:id="topBannerText" text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1420.0420"
                    style="-fx-font-size: 14px; -fx-text-fill: #333;"
                    StackPane.alignment="CENTER_LEFT"/>
          </StackPane>
 
-         <HBox layoutY="30.0" prefHeight="70.0" prefWidth="1200.0" spacing="20" alignment="CENTER_LEFT"
+         <HBox prefHeight="70.0" prefWidth="1200.0" spacing="20" alignment="CENTER_LEFT"
                style="-fx-background-color: #FFFFFF;">
             <ImageView layoutX="30" fitHeight="60" preserveRatio="true" style="-fx-translate-x: 2;">
                <image>
@@ -45,8 +45,6 @@
                </graphic>
             </Button>
 
-            <MFXComboBox fx:id="cbbMfg" />
-
             <HBox alignment="CENTER_LEFT" spacing="5">
                <ImageView fitHeight="30" fitWidth="30">
                   <image>
@@ -61,28 +59,32 @@
       </VBox>
 
       <!-- ✅ GIỎ HÀNG -->
-      <GridPane fx:id="GpPhone">
-      <VBox layoutY="120.0" layoutX="40.0" spacing="20" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="120.0">
-         <Label text="🛒 Giỏ hàng của bạn" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+      <GridPane fx:id="GpPhone" AnchorPane.topAnchor="190.0" >
+         <VBox spacing="20">
+            <Label text="🛒 Giỏ hàng của bạn" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <ImageView fx:id="Img"
+                       fitHeight="160.0" fitWidth="188.0"
+                       pickOnBounds="true" preserveRatio="true"
+                       AnchorPane.topAnchor="3.0" AnchorPane.leftAnchor="6.0"
+                       AnchorPane.rightAnchor="6.0" AnchorPane.bottomAnchor="62.0" />
+            <ScrollPane fitToWidth="true" prefHeight="500.0">
+               <VBox fx:id="cartList" spacing="15">
+                  <padding>
+                     <Insets top="20" right="20" bottom="20" left="20"/>
+                  </padding>
+               </VBox>
+            </ScrollPane>
 
-         <ScrollPane fitToWidth="true" prefHeight="500.0">
-            <VBox fx:id="cartList" spacing="15">
-               <padding>
-                  <Insets top="20" right="20" bottom="20" left="20"/>
-               </padding>
-            </VBox>
-         </ScrollPane>
+            <HBox spacing="20" alignment="CENTER_RIGHT">
+               <Label text="Tổng cộng:" style="-fx-font-size: 18px;"/>
+               <Label fx:id="totalLabel" style="-fx-font-size: 22px; -fx-text-fill: red;"/>
+            </HBox>
 
-         <HBox spacing="20" alignment="CENTER_RIGHT">
-            <Label text="Tổng cộng:" style="-fx-font-size: 18px;"/>
-            <Label fx:id="totalLabel" style="-fx-font-size: 22px; -fx-text-fill: red;"/>
-         </HBox>
-
-         <HBox spacing="15" alignment="CENTER_RIGHT">
-            <MFXButton fx:id="btnBack" text="← Tiếp tục mua hàng" onAction="#btnBackClick"/>
-<!--            <MFXButton fx:id="btnCheckout" text="💳 Thanh toán" onAction="#btnCheckoutClick" style="-fx-background-color: #99CD4E;"/>-->
-         </HBox>
-      </VBox>
+            <HBox spacing="15" alignment="CENTER_RIGHT">
+               <MFXButton fx:id="btnBack" text="← Tiếp tục mua hàng" onAction="#btnBackClick"/>
+               <!--               <MFXButton fx:id="btnCheckout" text="💳 Thanh toán" onAction="#btnCheckoutClick" style="-fx-background-color: #99CD4E;"/>-->
+            </HBox>
+         </VBox>
       </GridPane>
 
    </children>
