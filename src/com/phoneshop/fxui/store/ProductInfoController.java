@@ -73,6 +73,7 @@ public class ProductInfoController implements Initializable {
     }
 
     public void setData(SmartPhone smartphone) {
+
         try {
             String imageName = smartphonedao.SelectImg(smartphone.getProductID().toString());  // e.g., "vsmart.jpg"
             if (imageName == null || imageName.isEmpty()) {
@@ -80,12 +81,11 @@ public class ProductInfoController implements Initializable {
                 return;
             }
 
-            String imagePath = "/images/" + imageName;
-            System.out.println("🖼️ Đang load ảnh từ: " + imagePath);
+            System.out.println("🖼️ Đang load ảnh từ: " + imageName);
 
-            InputStream is = getClass().getResourceAsStream(imagePath);
+            InputStream is = getClass().getClassLoader().getResourceAsStream(imageName);
             if (is == null) {
-                System.err.println("⚠ Ảnh không tồn tại trong resource: " + imagePath);
+                System.err.println("⚠ Ảnh không tồn tại trong resource: " + imageName);
                 return;
             }
 
