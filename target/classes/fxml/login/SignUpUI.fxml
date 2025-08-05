@@ -1,101 +1,281 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
-
-<?import java.net.URL?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-
+<?import javafx.scene.text.FontWeight?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.geometry.Insets?>
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
 <?import io.github.palexdev.materialfx.controls.MFXTextField?>
 <?import io.github.palexdev.materialfx.controls.MFXPasswordField?>
 <?import io.github.palexdev.materialfx.font.MFXFontIcon?>
-<AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.phoneshop.fxui.login.SignUpUIController" stylesheets="@../../css/FxmlCss.css">
 
-    <children>
-      <AnchorPane layoutX="350.0" maxHeight="510.0" maxWidth="350.0" minHeight="510.0" minWidth="350.0" prefHeight="510.0" prefWidth="350.0">
-         <children>
-                <MFXButton fx:id="btnSubmit" layoutX="195.0" layoutY="457.0" onAction="#btnSubmitClick" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: green;" text="Đăng ký" textFill="WHITE">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </MFXButton>
-                <MFXButton fx:id="btnBack" layoutX="35.0" layoutY="457.0" onAction="#btnBackClick" prefHeight="25.0" prefWidth="120.0" style="-fx-background-color: green;" text="Quay lại" textFill="WHITE">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                    <graphic>
-                        <MFXFontIcon description="mfx-chevron-left" size="20" />
-                    </graphic>
-                </MFXButton>
-                <Label alignment="CENTER" layoutX="109.0" layoutY="10.0" prefHeight="60.0" prefWidth="150.0" text="Đăng ký" textFill="#aaaaaa">
-                    <font>
-                        <Font name="System Bold Italic" size="34.0" />
-                    </font>
-                </Label>
-                <MFXTextField fx:id="txtUserName" layoutX="35.0" layoutY="85.0" prefHeight="25.0" prefWidth="280.0" promptText="Tài khoản">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </MFXTextField>
-                <MFXPasswordField fx:id="txtPassword" layoutX="35.0" layoutY="155.0" prefHeight="25.0" prefWidth="280.0" promptText="Mật khẩu">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </MFXPasswordField>
-                <MFXTextField fx:id="txtName"  layoutX="35.0" layoutY="224.0" prefHeight="25.0" prefWidth="280.0" promptText="Họ và tên">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </MFXTextField>
-                <MFXTextField fx:id="txtPhoneNum" layoutX="35.0" layoutY="294.0" prefHeight="25.0" prefWidth="280.0" promptText="Số điện thoại">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </MFXTextField>
-                <MFXTextField fx:id="txtEmail" layoutX="35.0" layoutY="363.0" prefHeight="25.0" prefWidth="280.0" promptText="Email">
-                    <font>
-                        <Font size="18.0" />
-                    </font>
-                </MFXTextField>
-            <Label fx:id="lbMessage1" layoutX="35.0" layoutY="125.0" prefHeight="30.0" prefWidth="280.0" textFill="RED">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="lbMessage2" layoutX="35.0" layoutY="194.0" prefHeight="30.0" prefWidth="280.0" textFill="RED">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="lbMessage3" layoutX="35.0" layoutY="264.0" prefHeight="30.0" prefWidth="280.0" textFill="RED">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="lbMessage4" layoutX="35.0" layoutY="333.0" prefHeight="30.0" prefWidth="280.0" textFill="RED">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-            <Label fx:id="lbMessage5" layoutX="35.0" layoutY="402.0" prefHeight="30.0" prefWidth="280.0" textFill="RED">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-      <AnchorPane prefHeight="510.0" prefWidth="350.0" style="-fx-background-color: #DDDDDD;">
-         <children>
-            <ImageView fitHeight="350.0" fitWidth="394.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@/images/user-244-512.png" />
-               </image>
-            </ImageView>
-         </children>
-      </AnchorPane>
-    </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" 
+            prefHeight="600.0" prefWidth="900.0" 
+            style="-fx-background-color: linear-gradient(to bottom right, #667eea 0%, #764ba2 100%);"
+            xmlns="http://javafx.com/javafx/24.0.1" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.phoneshop.fxui.login.SignUpUIController">
+   
+   <children>
+      <!-- Main SignUp Card -->
+      <StackPane AnchorPane.topAnchor="50.0" AnchorPane.bottomAnchor="50.0" 
+                 AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0">
+         
+         <HBox style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 20, 0, 0, 5);" 
+               prefHeight="450.0" prefWidth="750.0">
+            
+            <!-- Left Section: Brand & Image -->
+            <VBox alignment="CENTER" spacing="15" prefWidth="375" 
+                  style="-fx-background-color: linear-gradient(to bottom, #f8f9fa, #e9ecef); -fx-background-radius: 20 0 0 20;">
+               
+               <!-- Logo Section -->
+               <VBox alignment="CENTER" spacing="12" style="-fx-padding: 30;">
+                  <ImageView fitHeight="100" fitWidth="100" preserveRatio="true">
+                     <image>
+                        <Image url="@/images/logo6.png" />
+                     </image>
+                  </ImageView>
+                  
+                  <Label text="MOBILESHOP" 
+                         style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #1f2937;"/>
+                  
+                  <Label text="Tham gia cùng chúng tôi" 
+                         style="-fx-font-size: 16px; -fx-text-fill: #6b7280; -fx-font-style: italic;"/>
+               </VBox>
+               
+               <!-- Phone Image -->
+               <ImageView fitHeight="200" fitWidth="250" preserveRatio="true" 
+                          style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);">
+                  <image>
+                     <Image url="@/images/iphone-11-64g.jpg" />
+                  </image>
+               </ImageView>
+               
+               <!-- Benefits -->
+               <VBox alignment="CENTER" spacing="8" style="-fx-padding: 15;">
+                  <Label text="🎁 Ưu đãi đặc biệt cho thành viên mới" 
+                         style="-fx-font-size: 14px; -fx-text-fill: #374151; -fx-font-weight: 600;"/>
+                  <Label text="🚚 Miễn phí vận chuyển lần đầu" 
+                         style="-fx-font-size: 14px; -fx-text-fill: #374151; -fx-font-weight: 600;"/>
+                  <Label text="💎 Tích điểm và nhận quà tặng" 
+                         style="-fx-font-size: 14px; -fx-text-fill: #374151; -fx-font-weight: 600;"/>
+               </VBox>
+            </VBox>
+            
+            <!-- Right Section: SignUp Form -->
+            <VBox alignment="CENTER" spacing="25" prefWidth="375" style="-fx-padding: 40; -fx-background-radius: 0 20 20 0;">
+               
+               <!-- Welcome Text -->
+               <VBox alignment="CENTER" spacing="10">
+                  <Label text="Tạo tài khoản mới" 
+                         style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1f2937;"/>
+                  <Label text="Điền thông tin để bắt đầu mua sắm" 
+                         style="-fx-font-size: 16px; -fx-text-fill: #6b7280;"/>
+               </VBox>
+               
+               <!-- SignUp Form -->
+               <VBox spacing="15" prefWidth="280" alignment="CENTER">
+                  
+                  <!-- Username Field -->
+                  <VBox spacing="6" prefWidth="280">
+                     <Label text="Tài khoản" 
+                            style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #374151;"/>
+                     <MFXTextField fx:id="txtUserName" 
+                                   promptText="Nhập tài khoản của bạn"
+                                   prefWidth="280"
+                                   prefHeight="45"
+                                   style="
+                                       -fx-font-size: 16px;
+                                       -fx-prompt-text-fill: #9ca3af;
+                                       -fx-background-color: #f9fafb;
+                                       -fx-background-radius: 12;
+                                       -fx-border-radius: 12;
+                                       -fx-border-color: #e5e7eb;
+                                       -fx-border-width: 1;
+                                       -fx-padding: 12 16;
+                                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);">
+                        <font>
+                           <Font size="16.0" />
+                        </font>
+                     </MFXTextField>
+                     <Label fx:id="lbMessage1" 
+                            style="-fx-font-size: 12px; -fx-text-fill: #ef4444; -fx-font-weight: 500;" />
+                  </VBox>
+                  
+                  <!-- Password Field -->
+                  <VBox spacing="6" prefWidth="280">
+                     <Label text="Mật khẩu" 
+                            style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #374151;"/>
+                     <MFXPasswordField fx:id="txtPassword" 
+                                       promptText="Nhập mật khẩu của bạn"
+                                       prefWidth="280"
+                                       prefHeight="45"
+                                       style="
+                                           -fx-font-size: 16px;
+                                           -fx-prompt-text-fill: #9ca3af;
+                                           -fx-background-color: #f9fafb;
+                                           -fx-background-radius: 12;
+                                           -fx-border-radius: 12;
+                                           -fx-border-color: #e5e7eb;
+                                           -fx-border-width: 1;
+                                           -fx-padding: 12 16;
+                                           -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);">
+                        <font>
+                           <Font size="16.0" />
+                        </font>
+                     </MFXPasswordField>
+                     <Label fx:id="lbMessage2" 
+                            style="-fx-font-size: 12px; -fx-text-fill: #ef4444; -fx-font-weight: 500;" />
+                  </VBox>
+                  
+                  <!-- Name Field -->
+                  <VBox spacing="6" prefWidth="280">
+                     <Label text="Họ và tên" 
+                            style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #374151;"/>
+                     <MFXTextField fx:id="txtName" 
+                                   promptText="Nhập họ và tên của bạn"
+                                   prefWidth="280"
+                                   prefHeight="45"
+                                   style="
+                                       -fx-font-size: 16px;
+                                       -fx-prompt-text-fill: #9ca3af;
+                                       -fx-background-color: #f9fafb;
+                                       -fx-background-radius: 12;
+                                       -fx-border-radius: 12;
+                                       -fx-border-color: #e5e7eb;
+                                       -fx-border-width: 1;
+                                       -fx-padding: 12 16;
+                                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);">
+                        <font>
+                           <Font size="16.0" />
+                        </font>
+                     </MFXTextField>
+                     <Label fx:id="lbMessage3" 
+                            style="-fx-font-size: 12px; -fx-text-fill: #ef4444; -fx-font-weight: 500;" />
+                  </VBox>
+                  
+                  <!-- Phone Field -->
+                  <VBox spacing="6" prefWidth="280">
+                     <Label text="Số điện thoại" 
+                            style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #374151;"/>
+                     <MFXTextField fx:id="txtPhoneNum" 
+                                   promptText="Nhập số điện thoại của bạn"
+                                   prefWidth="280"
+                                   prefHeight="45"
+                                   style="
+                                       -fx-font-size: 16px;
+                                       -fx-prompt-text-fill: #9ca3af;
+                                       -fx-background-color: #f9fafb;
+                                       -fx-background-radius: 12;
+                                       -fx-border-radius: 12;
+                                       -fx-border-color: #e5e7eb;
+                                       -fx-border-width: 1;
+                                       -fx-padding: 12 16;
+                                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);">
+                        <font>
+                           <Font size="16.0" />
+                        </font>
+                     </MFXTextField>
+                     <Label fx:id="lbMessage4" 
+                            style="-fx-font-size: 12px; -fx-text-fill: #ef4444; -fx-font-weight: 500;" />
+                  </VBox>
+                  
+                  <!-- Email Field -->
+                  <VBox spacing="6" prefWidth="280">
+                     <Label text="Email" 
+                            style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #374151;"/>
+                     <MFXTextField fx:id="txtEmail" 
+                                   promptText="Nhập email của bạn"
+                                   prefWidth="280"
+                                   prefHeight="45"
+                                   style="
+                                       -fx-font-size: 16px;
+                                       -fx-prompt-text-fill: #9ca3af;
+                                       -fx-background-color: #f9fafb;
+                                       -fx-background-radius: 12;
+                                       -fx-border-radius: 12;
+                                       -fx-border-color: #e5e7eb;
+                                       -fx-border-width: 1;
+                                       -fx-padding: 12 16;
+                                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 1);">
+                        <font>
+                           <Font size="16.0" />
+                        </font>
+                     </MFXTextField>
+                     <Label fx:id="lbMessage5" 
+                            style="-fx-font-size: 12px; -fx-text-fill: #ef4444; -fx-font-weight: 500;" />
+                  </VBox>
+                  
+                  <!-- Buttons -->
+                  <HBox spacing="12" alignment="CENTER" prefWidth="280">
+                     <MFXButton fx:id="btnBack" 
+                                onAction="#btnBackClick" 
+                                text="Quay lại"
+                                prefWidth="130"
+                                prefHeight="45"
+                                style="
+                                    -fx-background-color: #6b7280; 
+                                    -fx-text-fill: white; 
+                                    -fx-font-size: 16px;
+                                    -fx-font-weight: 600;
+                                    -fx-background-radius: 12;
+                                    -fx-padding: 12 20;
+                                    -fx-effect: dropshadow(gaussian, rgba(107,114,128,0.3), 6, 0, 0, 2);">
+                        <graphic>
+                           <MFXFontIcon description="mfx-chevron-left" size="20" />
+                        </graphic>
+                        <font>
+                           <Font size="16.0" />
+                        </font>
+                     </MFXButton>
+                     
+                     <MFXButton fx:id="btnSubmit" 
+                                onAction="#btnSubmitClick" 
+                                text="Đăng ký"
+                                prefWidth="130"
+                                prefHeight="45"
+                                style="
+                                    -fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); 
+                                    -fx-text-fill: white; 
+                                    -fx-font-size: 16px;
+                                    -fx-font-weight: bold;
+                                    -fx-background-radius: 12;
+                                    -fx-padding: 12 20;
+                                    -fx-effect: dropshadow(gaussian, rgba(102,126,234,0.4), 10, 0, 0, 3);">
+                        <font>
+                           <Font size="16.0" />
+                        </font>
+                     </MFXButton>
+                  </HBox>
+               </VBox>
+               
+               <!-- Footer -->
+               <VBox alignment="CENTER" spacing="5">
+                  <Label text="Bằng cách đăng ký, bạn đồng ý với" 
+                         style="-fx-font-size: 12px; -fx-text-fill: #6b7280;" />
+                  <HBox alignment="CENTER" spacing="5">
+                     <Label text="Điều khoản sử dụng" 
+                            style="-fx-font-size: 12px; -fx-text-fill: #667eea; -fx-font-weight: 600; -fx-underline: true;" />
+                     <Label text="và" 
+                            style="-fx-font-size: 12px; -fx-text-fill: #6b7280;" />
+                     <Label text="Chính sách bảo mật" 
+                            style="-fx-font-size: 12px; -fx-text-fill: #667eea; -fx-font-weight: 600; -fx-underline: true;" />
+                  </HBox>
+               </VBox>
+            </VBox>
+         </HBox>
+      </StackPane>
+   </children>
 </AnchorPane>
