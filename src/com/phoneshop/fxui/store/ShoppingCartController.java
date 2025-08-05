@@ -78,6 +78,7 @@ public class ShoppingCartController implements Initializable {
                 ctrl.setData(phone);
                 ctrl.initialize(phone.getAmount());
 
+                pane.getProperties().put("controller", ctrl);
                 // Checkbox mặc định bỏ chọn
                 ctrl.checkbox.setSelected(false);
 
@@ -124,9 +125,9 @@ public class ShoppingCartController implements Initializable {
     }
 
     @FXML
-    private void btnCheckoutClick(ActionEvent e) throws IOException {
+    private void btnCheckoutClick(ActionEvent e) {
         if (total.get() == 0) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Bạn chưa chọn sản phẩm nào!", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Bạn chưa chọn sản phẩm nào để thanh toán!", ButtonType.OK);
             alert.showAndWait();
             return;
         }
@@ -141,10 +142,20 @@ public class ShoppingCartController implements Initializable {
         confirm.showAndWait();
 
         if (confirm.getResult() == ButtonType.YES) {
+            // ✅ 1. Xử lý thanh toán trong DB
             smartphoneDAO.ordered(UserName.CartID);
-            Alert success = new Alert(Alert.AlertType.INFORMATION, "Thanh toán thành công!", ButtonType.OK);
+
+            // ✅ 2. Xóa các sản phẩm đã tick trong giao diện
+            cartList.getChildren().removeIf(node -> {
+                ProductInfoController ctrl = (ProductInfoController) node.getProperties().get("controller");
+                return ctrl != null && ctrl.checkbox.isSelected();
+            });
+
+            // ✅ 3. Reset tổng tiền
+            total.set(0);
+
+            Alert success = new Alert(Alert.AlertType.INFORMATION, "Thanh toán thành công! Các sản phẩm đã chọn đã bị xóa khỏi giỏ hàng.", ButtonType.OK);
             success.showAndWait();
-            Navigator.getInstance().goToLogin(); // Chuyển về store hoặc trang khác
         }
     }
 
