@@ -39,6 +39,7 @@ import javafx.fxml.FXMLLoader;
 
 public class StoreUIController implements Initializable {
 
+    public MFXButton btnLogOut;
     private SmartPhoneDAO smartphonedao = new SmartPhoneDAOImp();
     private List<SmartPhone> neww;
 
@@ -100,11 +101,6 @@ public class StoreUIController implements Initializable {
         Navigator.getInstance().goToStore("");
     }
 
-    @FXML
-    void btnLogOut(ActionEvent event) throws IOException {
-        UserName.sbb = "";
-        Navigator.getInstance().goToLogin();
-    }
 
     @FXML
     void btnSearchClick(ActionEvent event) {
@@ -304,4 +300,10 @@ public class StoreUIController implements Initializable {
             bannerImage.setImage(bannerImages.get(currentImageIndex));
         }
     }
+
+    @FXML
+    void btnLogOut(ActionEvent event) throws IOException {
+        Navigator.getInstance().goToLogin();
+    }
+
 }

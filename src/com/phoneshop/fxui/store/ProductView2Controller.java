@@ -38,6 +38,7 @@ import javafx.util.Duration;
 
 public class ProductView2Controller implements Initializable {
 
+    public MFXButton btnLogOut;
     private SmartPhoneDAO smartphonedao = new SmartPhoneDAOImp();
 
     private SmartPhone SmartPhone = null;
@@ -131,6 +132,10 @@ public class ProductView2Controller implements Initializable {
             "MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC"
     };
 
+    private List<String> imageLinks;
+    private int currentImageIndex = 0;
+
+
 
     @FXML
     void HomeClick(ActionEvent event) throws IOException {
@@ -204,31 +209,10 @@ public class ProductView2Controller implements Initializable {
         }
 
         // ✅ Ảnh phụ
-        imageGallery.getChildren().clear();
-        for (String link : phone.getImageLinks()) {
-            try {
-                InputStream is = getClass().getClassLoader().getResourceAsStream(link);
-                if (is != null) {
-                    Image img = new Image(is, 100, 100, true, true);
-                    ImageView imgView = new ImageView(img);
-                    imgView.setFitHeight(100);
-                    imgView.setFitWidth(100);
-                    imgView.setPreserveRatio(true);
+        imageLinks = phone.getImageLinks();
+        currentImageIndex = 0;
+        showImageAt(currentImageIndex);
 
-                    imgView.setOnMouseClicked(e -> {
-                        try {
-                            Img.setImage(new Image(getClass().getClassLoader().getResourceAsStream(link)));
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    });
-
-                    imageGallery.getChildren().add(imgView);
-                }
-            } catch (Exception e) {
-                System.out.println("Lỗi ảnh phụ: " + link);
-            }
-        }
 
         // ✅ Thông tin sản phẩm
         lbName.setText(phone.getName());
@@ -272,6 +256,45 @@ public class ProductView2Controller implements Initializable {
             System.out.println("❌ Lỗi khi thêm vào giỏ hàng: " + e.getMessage());
         }
     }
+
+    private void showImageAt(int index) {
+        if (imageLinks == null || imageLinks.isEmpty()) return;
+
+        String link = imageLinks.get(index);
+        try {
+            InputStream is = getClass().getClassLoader().getResourceAsStream(link);
+            if (is != null) {
+                Img.setImage(new Image(is));
+            }
+        } catch (Exception e) {
+            System.out.println("❌ Không thể load ảnh: " + link);
+        }
+
+        // Cập nhật chỉ số hiển thị
+        if (lbImageIndex != null) {
+            lbImageIndex.setText((index + 1) + " / " + imageLinks.size());
+        }
+    }
+
+    @FXML
+    private Label lbImageIndex;
+
+    @FXML
+    private void handleNextImage() {
+        if (imageLinks != null && !imageLinks.isEmpty()) {
+            currentImageIndex = (currentImageIndex + 1) % imageLinks.size();
+            showImageAt(currentImageIndex);
+        }
+    }
+
+    @FXML
+    private void handlePrevImage() {
+        if (imageLinks != null && !imageLinks.isEmpty()) {
+            currentImageIndex = (currentImageIndex - 1 + imageLinks.size()) % imageLinks.size();
+            showImageAt(currentImageIndex);
+        }
+    }
+
 
 
 
