@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.*?>
+<?import io.github.palexdev.materialfx.controls.*?>
+
+<AnchorPane fx:id="root" prefWidth="1200.0" prefHeight="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml" fx:controller="com.phoneshop.fxui.store.ShoppingCartController">
+
+   <children>
+
+      <!-- ✅ HEADER -->
+      <VBox fx:id="headerBox" spacing="5.0" prefWidth="1200.0" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <StackPane prefHeight="40" prefWidth="1200" style="-fx-background-color: #E6F7F4;">
+            <Label fx:id="topBannerText" text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1420.0420"
+                   style="-fx-font-size: 14px; -fx-text-fill: #333;"
+                   StackPane.alignment="CENTER_LEFT"/>
+         </StackPane>
+
+         <HBox prefHeight="70.0" prefWidth="1200.0" spacing="20" alignment="CENTER_LEFT"
+               style="-fx-background-color: #FFFFFF;">
+            <ImageView layoutX="30" fitHeight="60" preserveRatio="true" style="-fx-translate-x: 2;">
+               <image>
+                  <Image url="@/images/logo6.png" />
+               </image>
+            </ImageView>
+
+            <TextField fx:id="searchBar"
+                       prefWidth="600.0"
+                       promptText=" Tìm kiếm sản phẩm, hãng sản xuất,..."
+                       style="-fx-font-size: 16px; -fx-prompt-text-fill: derive(-fx-control-inner-background, -30%); -fx-font-style: italic;">
+            </TextField>
+
+            <MFXButton fx:id="btnSearch" text="Tìm kiếm" onAction="#btnSearchClick"/>
+
+            <Button>
+               <graphic>
+                  <ImageView fitHeight="30" fitWidth="30">
+                     <image>
+                        <Image url="@/images/cart.png"/>
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+
+            <HBox alignment="CENTER_LEFT" spacing="5">
+               <ImageView fitHeight="30" fitWidth="30">
+                  <image>
+                     <Image url="@/images/user.png"/>
+                  </image>
+               </ImageView>
+               <Label fx:id="txtUserName" text=""/>
+            </HBox>
+
+            <MFXButton fx:id="btnLogOut" text="Log Out" onAction="#btnLogOut"/>
+         </HBox>
+      </VBox>
+
+      <!-- ✅ GIỎ HÀNG -->
+      <GridPane fx:id="GpPhone" AnchorPane.topAnchor="190.0" >
+         <VBox spacing="20">
+            <Label text="🛒 Giỏ hàng của bạn" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <ImageView fx:id="Img"
+                       fitHeight="160.0" fitWidth="188.0"
+                       pickOnBounds="true" preserveRatio="true"
+                       AnchorPane.topAnchor="3.0" AnchorPane.leftAnchor="6.0"
+                       AnchorPane.rightAnchor="6.0" AnchorPane.bottomAnchor="62.0" />
+            <ScrollPane fitToWidth="true" prefHeight="500.0">
+               <VBox fx:id="cartList" spacing="15">
+                  <padding>
+                     <Insets top="20" right="20" bottom="20" left="20"/>
+                  </padding>
+               </VBox>
+            </ScrollPane>
+
+            <HBox spacing="20" alignment="CENTER_RIGHT">
+               <Label text="Tổng cộng:" style="-fx-font-size: 18px;"/>
+               <Label fx:id="totalLabel" style="-fx-font-size: 22px; -fx-text-fill: red;"/>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_RIGHT">
+               <MFXButton fx:id="btnBack" text="← Tiếp tục mua hàng" onAction="#btnBackClick"/>
+               <!--               <MFXButton fx:id="btnCheckout" text="💳 Thanh toán" onAction="#btnCheckoutClick" style="-fx-background-color: #99CD4E;"/>-->
+            </HBox>
+         </VBox>
+      </GridPane>
+
+   </children>
+</AnchorPane>
