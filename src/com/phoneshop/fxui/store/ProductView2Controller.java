@@ -233,28 +233,73 @@ public class ProductView2Controller implements Initializable {
             int productID = UserName.id;
             int amount = Spinner.getValue();
 
+            System.out.println("🛒 Thêm vào giỏ hàng:");
+            System.out.println("   - Cart ID: " + cartID);
+            System.out.println("   - Product ID: " + productID);
+            System.out.println("   - Amount: " + amount);
+
+            // Kiểm tra dữ liệu đầu vào
+            if (cartID <= 0) {
+                showErrorAlert("Lỗi giỏ hàng", "Không tìm thấy giỏ hàng. Vui lòng đăng nhập lại.");
+                return;
+            }
+
+            if (productID <= 0) {
+                showErrorAlert("Lỗi sản phẩm", "Không tìm thấy thông tin sản phẩm.");
+                return;
+            }
+
+            if (amount <= 0) {
+                showErrorAlert("Lỗi số lượng", "Số lượng phải lớn hơn 0.");
+                return;
+            }
+
             if (smartphonedao.isProductInCart(cartID, productID)) {
                 // Sản phẩm đã có -> cập nhật số lượng
+                System.out.println("📝 Sản phẩm đã có trong giỏ hàng, cập nhật số lượng...");
                 int currentAmount = smartphonedao.selectAmount(cartID, productID);
                 boolean updated = smartphonedao.updateCart(cartID, productID, currentAmount + amount);
                 if (updated) {
-                    warning4(); // Hiển thị thông báo
+                    showSuccessAlert("Cập nhật giỏ hàng thành công!", 
+                        "Sản phẩm đã được cập nhật số lượng trong giỏ hàng.");
                 } else {
                     System.out.println("❌ Cập nhật giỏ hàng thất bại.");
+                    showErrorAlert("Lỗi cập nhật", "Không thể cập nhật số lượng sản phẩm trong giỏ hàng.");
                 }
             } else {
                 // Sản phẩm chưa có -> thêm mới
+                System.out.println("➕ Thêm sản phẩm mới vào giỏ hàng...");
                 boolean inserted = smartphonedao.addtocartdetail(cartID, productID, amount);
                 if (inserted) {
-                    warning4(); // Hiển thị thông báo
+                    showSuccessAlert("Thêm vào giỏ hàng thành công!", 
+                        "Sản phẩm đã được thêm vào giỏ hàng của bạn.");
                 } else {
                     System.out.println("❌ Thêm vào giỏ hàng thất bại.");
+                    showErrorAlert("Lỗi thêm vào giỏ hàng", "Không thể thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.");
                 }
             }
 
         } catch (Exception e) {
             System.out.println("❌ Lỗi khi thêm vào giỏ hàng: " + e.getMessage());
+            e.printStackTrace();
+            showErrorAlert("Lỗi hệ thống", "Có lỗi xảy ra: " + e.getMessage());
         }
+    }
+
+    private void showSuccessAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void showErrorAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     private void showImageAt(int index) {
@@ -297,13 +342,6 @@ public class ProductView2Controller implements Initializable {
 
 
 
-
-    private void warning4() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Sản phẩm đã được thêm vào giỏ hàng");
-        alert.setTitle("Hoàn thành"); 
-        alert.showAndWait();
-    }
 
     @FXML
     private void btnCartClick(ActionEvent event) throws IOException {
