@@ -32,8 +32,11 @@ public class Admin {
         name = new SimpleStringProperty();
         email = new SimpleStringProperty();
         numberPhone = new SimpleStringProperty();
+
     }
-    
+
+
+
     public Integer getId() {
         return id.get();
     }

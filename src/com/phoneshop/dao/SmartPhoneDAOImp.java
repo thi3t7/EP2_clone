@@ -646,32 +646,36 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
     }
 
 
-    public boolean ordered(int id) {
-        String sql = "INSERT INTO `order`(CartID, `Date`)"
-                + "VALUES (?,?)";
-        try (
-                Connection conn = DbFactory.getConnection(database);
-                PreparedStatement stmt = conn.prepareStatement(sql);) {
+    // Gợi ý: trong SmartPhoneDAO / SmartPhoneDAOImp
 
-            stmt.setInt(1, id);
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yy/MM/dd");
-            LocalDateTime now = LocalDateTime.now();
-            stmt.setString(2,now.toString());
+    @Override
+    public boolean ordered(int cartId, String address) {
+        final String sql = "INSERT INTO `order` (CartID, `Date`, `address`, `status`) VALUES (?, ?, ?, ?)";
+
+
+        try (Connection conn = DbFactory.getConnection(database);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, cartId);
+            stmt.setString(2, LocalDateTime.now().toString());
+            stmt.setString(3, address);
+            stmt.setString(4, "PENDING");
+
 
             int rowUpdate = stmt.executeUpdate();
-
             if (rowUpdate == 1) {
                 return true;
             } else {
-                System.out.println("No order updated");
+                System.out.println("No order inserted");
                 return false;
             }
         } catch (Exception e) {
-            System.err.println(e.getMessage() + ": update order");
+            System.err.println("ordered() failed: " + e.getMessage());
             return false;
         }
     }
-    
+
+
     public int selectProductIdByName(String name){
         int a = 0;
         try (
@@ -688,27 +692,16 @@ public class SmartPhoneDAOImp implements SmartPhoneDAO {
 
         return a;
     }
-    
-    public boolean deleteCart(int id){
-        String sql = "DELETE from cart_detail WHERE productID = ?";
 
-        try (
-                Connection conn = DbFactory.getConnection(database);
-                PreparedStatement stmt = conn.prepareStatement(sql);) {
-
-            stmt.setInt(1, id);
-
-            int rowDelete = stmt.executeUpdate();
-            if (rowDelete == 1) {
-                return true;
-            } else {
-                System.out.println("No cart deleted");
-                return false;
-            }
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + " Delete Cart");
-            return false;
+    public void deleteCart(int cartID, int productID) {
+        String sql = "DELETE FROM cart_detail WHERE cartID = ? AND productID = ?";
+        try (Connection conn = DbFactory.getConnection(database);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, cartID);
+            ps.setInt(2, productID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

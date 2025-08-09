@@ -50,6 +50,9 @@ public class ProductInfoController implements Initializable {
     @FXML
     CheckBox checkbox;
 
+    @FXML
+    private int productID;
+
     /**
      * Initializes the controller class.
      */
@@ -68,9 +71,20 @@ public class ProductInfoController implements Initializable {
 
     @FXML
     private void deleteBtnClick(ActionEvent event) throws IOException {
-        smartphonedao.deleteCart(smartphonedao.selectProductIdByName(name.getText()));
+        int productID = smartphonedao.selectProductIdByName(name.getText());
+        smartphonedao.deleteCart(UserName.CartID, productID); // ✅ Xóa đúng của user hiện tại
         Navigator.getInstance().goToShoppingCart(UserName.CartID);
     }
+
+
+    public int getProductID() {
+        return productID;
+    }
+
+    public void setProductID(int productID) {
+        this.productID = productID;
+    }
+
 
     public void setData(SmartPhone smartphone) {
 
@@ -95,10 +109,19 @@ public class ProductInfoController implements Initializable {
             name.setText(smartphone.getName());
             price.setText(smartphone.getPrice() + "$");
             total_price.setText((Integer.parseInt(smartphone.getPrice()) * smartphone.getAmount()) + "$");
+            productID = smartphone.getProductID();
+            System.out.println(productID);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public int getUnitPrice() { return parsePrice(price.getText()); }
+    public int getAmount()    { return amount.getValue(); }
+
+    private int parsePrice(String priceText) {
+        return Integer.parseInt(priceText.replaceAll("[^\\d]", ""));
     }
 
 

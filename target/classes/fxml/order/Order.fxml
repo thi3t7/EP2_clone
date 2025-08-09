@@ -26,7 +26,8 @@
                <MFXButton fx:id="LogOut" styleClass="nav-button" onAction="#btnLogoutClick" text="Logout" HBox.hgrow="ALWAYS" />
             </children>
          </HBox>
-         <TableView fx:id="tvOrder" layoutX="100.0" layoutY="109.0" prefHeight="525.0" prefWidth="1000.0">
+         <TableView fx:id="tvOrder" layoutX="100.0" layoutY="109.0" prefHeight="525.0" prefWidth="1000.0"
+                    editable="true">
             <columns>
                <TableColumn fx:id="tcOrderID" minWidth="166.0" prefWidth="166.0" text="OrderID" />
                <TableColumn fx:id="tcCustomerName" minWidth="168.0" prefWidth="168.0" text="Customer name" />
@@ -34,6 +35,9 @@
                <TableColumn fx:id="tcAmount" minWidth="166.0" prefWidth="166.0" text="Amount" />
                <TableColumn fx:id="tcTotal" minWidth="166.0" prefWidth="166.0" text="Total" />
                <TableColumn fx:id="tcDate" minWidth="166.0" prefWidth="166.0" text="Date" />
+               <TableColumn fx:id="tcAddress" minWidth="166.0" prefWidth="166.0" text="Address" />
+               <TableColumn fx:id="tcStatus" text="Status" prefWidth="120"/>
+               <!-- 👈 thêm -->
             </columns>
          </TableView>
          <MFXButton fx:id="btnReset" layoutX="560.0" layoutY="656.0" onAction="#btnResetClick" prefHeight="30.0" prefWidth="80.0" styleClass="button-blue" text="Reset" textFill="WHITE" />

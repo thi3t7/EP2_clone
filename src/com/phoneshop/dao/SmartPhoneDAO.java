@@ -61,11 +61,11 @@ public interface SmartPhoneDAO {
 
     public ObservableList<SmartPhone> selectAllCart(int cartID);
     
-    public boolean ordered(int id);
+    public boolean ordered(int id, String address);
     
     public int selectProductIdByName(String name);
     
-    public boolean deleteCart(int id);
+    public void deleteCart(int Cartid, int Productid);
 
     public List<String> selectImagesByProductID(int productId);
 }

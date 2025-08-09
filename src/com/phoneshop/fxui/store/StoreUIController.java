@@ -37,70 +37,74 @@ import javafx.scene.layout.TilePane;
 import javafx.util.Duration;
 import javafx.fxml.FXMLLoader;
 
+// ... imports giữ nguyên
+
 public class StoreUIController implements Initializable {
 
     public MFXButton btnLogOut;
-    private SmartPhoneDAO smartphonedao = new SmartPhoneDAOImp();
-    private List<SmartPhone> neww;
+    private final SmartPhoneDAO smartphonedao = new SmartPhoneDAOImp();
 
-    @FXML
-    private Label txtUserName;
+    // ❌ bỏ: private List<SmartPhone> neww;
+    private final ObservableList<SmartPhone> productList = FXCollections.observableArrayList();
 
-    @FXML
-    private TilePane GpPhone;
-
-    @FXML
-    private MFXButton btnLogout;
-
-    @FXML
-    private TextField searchBar;
-
-    @FXML
-    private MFXButton btnSearch;
-
-    @FXML
-    private MFXButton HomeBtn;
-
-    @FXML
-    private MFXComboBox<String> cbbMfg;
-
-    @FXML
-    private MFXButton btnCart;
-
-    @FXML
-    private Label topBannerText;
+    @FXML private Label txtUserName;
+    @FXML private TilePane GpPhone;
+    @FXML private MFXButton btnLogout;
+    @FXML private TextField searchBar;
+    @FXML private MFXButton btnSearch;
+    @FXML private MFXButton HomeBtn;
+    @FXML private MFXComboBox<String> cbbMfg;
+    @FXML private MFXButton btnCart;
+    @FXML private Label topBannerText;
 
     private int currentBannerIndex = 0;
     private Timeline bannerTimeline;
-
     private TranslateTransition marquee;
 
-    @FXML
-    private Button btnPrev; // Nút mũi tên trái cho banner ảnh
+    @FXML private Button btnPrev;
+    @FXML private Button btnNext;
+    @FXML private ImageView bannerImage;
 
-    @FXML
-    private Button btnNext; // Nút mũi tên phải cho banner ảnh
-
-    @FXML
-    private ImageView bannerImage; // Hiển thị ảnh banner
-
-    // Danh sách câu slogan/banner text
-    private List<String> bannerMessages = List.of(
+    private final List<String> bannerMessages = List.of(
             "SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1900.2091",
             "THU CŨ GIÁ CAO TOÀN BỘ SẢN PHẨM",
             "MIỄN PHÍ VẬN CHUYỂN TOÀN QUỐC - HOÀN TIỀN 200% NẾU HÀNG GIẢ"
     );
 
-    // Danh sách ảnh banner
-    private List<Image> bannerImages = new ArrayList<>();
+    private final List<Image> bannerImages = new ArrayList<>();
     private int currentImageIndex = 0;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        txtUserName.setText(UserName.username);
+
+        topBannerText.setText(bannerMessages.get(currentBannerIndex));
+        startMarquee();
+
+        if (cbbMfg != null) {
+            cbbMfg.setItems(smartphonedao.selectmanu());
+            cbbMfg.setValue(UserName.sbb);
+        }
+
+        int id = smartphonedao.selectIdUser(UserName.username);
+        if (!smartphonedao.ifnotexits(id)) {
+            smartphonedao.addtocartforuser(id);
+        }
+        UserName.CartID = smartphonedao.selectCart(id);
+
+        // Load lần đầu
+        String kw = (UserName.search == null) ? "" : UserName.search;
+        searchBar.setText(kw);
+        filterProducts(kw);
+
+        initializeBannerImages();
+    }
 
     @FXML
     void HomeClick(ActionEvent event) throws IOException {
         UserName.sbb = "";
         Navigator.getInstance().goToStore("");
     }
-
 
     @FXML
     void btnSearchClick(ActionEvent event) {
@@ -109,87 +113,41 @@ public class StoreUIController implements Initializable {
     }
 
     private void filterProducts(String keyword) {
-        System.out.println("Filtering products by keyword: " + keyword);
         GpPhone.getChildren().clear();
 
-        ObservableList<SmartPhone> products;
-
+        List<SmartPhone> source;
         if (keyword == null || keyword.trim().isEmpty()) {
-            products = FXCollections.observableArrayList(smartphonedao.selectAlltoArray());
+            source = smartphonedao.selectAlltoArray();
         } else {
-            products = smartphonedao.selectByName(keyword);
-            if (products.isEmpty()) {
-                Warning(keyword);
-            }
+            ObservableList<SmartPhone> found = smartphonedao.selectByName(keyword);
+            source = new ArrayList<>(found);
+            if (source.isEmpty()) Warning(keyword);
         }
 
-        fill(products);
+        productList.setAll(source);
+        fill(productList);
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // Hiển thị tên người dùng
-        txtUserName.setText(UserName.username);
-
-        // Khởi động banner text chạy
-        topBannerText.setText(bannerMessages.get(currentBannerIndex));
-        startMarquee();
-
-        // Xử lý ComboBox nếu bạn còn dùng
-        if (cbbMfg != null) {
-            cbbMfg.setItems(smartphonedao.selectmanu());
-            cbbMfg.setValue(UserName.sbb);
-        }
-
-        // Xác nhận CartID của user
-        int id = smartphonedao.selectIdUser(UserName.username);
-        if (!smartphonedao.ifnotexits(id)) {
-            smartphonedao.addtocartforuser(id);
-        }
-        UserName.CartID = smartphonedao.selectCart(id);
-
-        // ✅ Search bar luôn hiển thị keyword nếu có
-        if (UserName.search != null && !UserName.search.isEmpty()) {
-            searchBar.setText(UserName.search);
-            filterProducts(UserName.search);
-        } else {
-            searchBar.clear();
-            filterProducts("");
-        }
-
-        // Khởi tạo banner ảnh
-        initializeBannerImages();
-    }
-
-    private void fill(ObservableList<SmartPhone> neww) {
+    private void fill(List<SmartPhone> list) {
         try {
             GpPhone.getChildren().clear();
-            if (neww == null || neww.isEmpty()) {
-                System.out.println("No products to display.");
-                return;
-            }
-            for (SmartPhone phone : neww) {
+            if (list == null || list.isEmpty()) return;
+
+            for (SmartPhone phone : list) {
                 FXMLLoader fxmlloader = new FXMLLoader(getClass().getResource("/fxml/store/Product.fxml"));
                 AnchorPane anchorpane = fxmlloader.load();
 
-                ProductController productController = fxmlloader.getController();
-
-                if (productController == null) {
-                    System.out.println("⚠ Controller của Product.fxml bị null!");
-                } else {
-                    productController.setData(phone);
-                    anchorpane.setOnMouseClicked(event -> {
-                        try {
-                            Navigator.getInstance().goToProductView2(phone.getName());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                ProductController pc = fxmlloader.getController();
+                if (pc != null) {
+                    pc.setData(phone);
+                    anchorpane.setOnMouseClicked(e -> {
+                        try { Navigator.getInstance().goToProductView2(phone.getName()); }
+                        catch (IOException ex) { ex.printStackTrace(); }
                     });
                 }
-
                 GpPhone.getChildren().add(anchorpane);
             }
-            System.out.println("Loaded " + neww.size() + " products.");
+            System.out.println("Loaded " + list.size() + " products.");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -207,39 +165,27 @@ public class StoreUIController implements Initializable {
         alert.showAndWait();
     }
 
-    @FXML
-    private void onSortRelevant(ActionEvent e) {
-        neww = smartphonedao.selectAlltoArray();
-        fill(FXCollections.observableArrayList(neww));
-    }
-
-    @FXML
-    private void onSortNewest(ActionEvent e) {
-        neww.sort((a, b) -> b.getProductID() - a.getProductID());
-        fill(FXCollections.observableArrayList(neww));
-    }
-
+    // ✅ Giữ lại nếu bạn vẫn muốn sắp xếp theo giá, không còn phụ thuộc biến neww
     @FXML
     private void onSortPriceAsc(ActionEvent e) {
-        neww.sort((a, b) -> Double.compare(Double.parseDouble(a.getPrice()), Double.parseDouble(b.getPrice())));
-        fill(FXCollections.observableArrayList(neww));
+        productList.sort((a, b) -> parsePrice(a.getPrice()) - parsePrice(b.getPrice()));
+        fill(productList);
     }
 
     @FXML
     private void onSortPriceDesc(ActionEvent e) {
-        neww.sort((a, b) -> Double.compare(Double.parseDouble(b.getPrice()), Double.parseDouble(a.getPrice())));
-        fill(FXCollections.observableArrayList(neww));
+        productList.sort((a, b) -> parsePrice(b.getPrice()) - parsePrice(a.getPrice()));
+        fill(productList);
     }
 
-    @FXML
-    private void onSortBestSeller(ActionEvent e) {
-        System.out.println("Sort by best seller clicked");
+    private int parsePrice(String s) {
+        // loại bỏ ký tự không phải số (VD: "1$" -> 1)
+        return Integer.parseInt(s.replaceAll("\\D", ""));
     }
 
     private void startMarquee() {
         double bannerWidth = 1200;
         double textWidth = topBannerText.getText().length() * 7;
-
         marquee = new TranslateTransition(Duration.seconds(8), topBannerText);
         marquee.setFromX(bannerWidth);
         marquee.setToX(-textWidth);
@@ -247,54 +193,31 @@ public class StoreUIController implements Initializable {
         marquee.play();
     }
 
-    @FXML
-    private void onBannerLeftClick() {
-        marquee.pause();
-        marquee.setRate(-1);
-        marquee.play();
-    }
-
-    @FXML
-    private void onBannerRightClick() {
-        marquee.pause();
-        marquee.setRate(1);
-        marquee.play();
-    }
+    @FXML private void onBannerLeftClick() { marquee.pause(); marquee.setRate(-1); marquee.play(); }
+    @FXML private void onBannerRightClick(){ marquee.pause(); marquee.setRate(1);  marquee.play(); }
 
     private void initializeBannerImages() {
-        // Thêm các ảnh banner (đường dẫn tương đối trong resources/images)
         String[] bannerPaths = {"/images/banner1.jpg", "/images/banner2.jpg"};
-        bannerImages.clear(); // Xóa danh sách cũ để tránh trùng lặp
+        bannerImages.clear();
         for (String path : bannerPaths) {
-            InputStream inputStream = getClass().getResourceAsStream(path);
-            if (inputStream == null) {
-                System.err.println("Resource not found: " + path);
-                continue; // Bỏ qua file không tìm thấy và tiếp tục với file khác
-            }
-            Image image = new Image(inputStream);
-            if (image != null && !image.isError()) {
-                bannerImages.add(image);
-            } else {
-                System.err.println("Failed to load image: " + path);
-            }
+            InputStream in = getClass().getResourceAsStream(path);
+            if (in == null) { System.err.println("Resource not found: " + path); continue; }
+            Image image = new Image(in);
+            if (!image.isError()) bannerImages.add(image);
         }
         if (!bannerImages.isEmpty() && bannerImage != null) {
             bannerImage.setImage(bannerImages.get(currentImageIndex));
-        } else {
-            System.err.println("No valid banner images loaded.");
         }
     }
 
-    @FXML
-    private void prevBannerImage() {
+    @FXML private void prevBannerImage() {
         if (!bannerImages.isEmpty() && bannerImage != null) {
             currentImageIndex = (currentImageIndex - 1 + bannerImages.size()) % bannerImages.size();
             bannerImage.setImage(bannerImages.get(currentImageIndex));
         }
     }
 
-    @FXML
-    private void nextBannerImage() {
+    @FXML private void nextBannerImage() {
         if (!bannerImages.isEmpty() && bannerImage != null) {
             currentImageIndex = (currentImageIndex + 1) % bannerImages.size();
             bannerImage.setImage(bannerImages.get(currentImageIndex));
@@ -305,5 +228,4 @@ public class StoreUIController implements Initializable {
     void btnLogOut(ActionEvent event) throws IOException {
         Navigator.getInstance().goToLogin();
     }
-
 }

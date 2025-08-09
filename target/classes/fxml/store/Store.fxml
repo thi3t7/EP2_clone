@@ -177,27 +177,9 @@
          <children>
             <Label text="Sắp xếp theo:" 
                    style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #374151;"/>
-            <MFXButton text="Liên quan" 
-                       onAction="#onSortRelevant"
-                       style="-fx-background-color: #f3f4f6; 
-                              -fx-text-fill: #374151; 
-                              -fx-font-weight: 600;
-                              -fx-background-radius: 20;
-                              -fx-padding: 8 16;"/>
-            <MFXButton text="Mới nhất" 
-                       onAction="#onSortNewest"
-                       style="-fx-background-color: #f3f4f6; 
-                              -fx-text-fill: #374151; 
-                              -fx-font-weight: 600;
-                              -fx-background-radius: 20;
-                              -fx-padding: 8 16;"/>
-            <MFXButton text="Bán chạy" 
-                       onAction="#onSortBestSeller"
-                       style="-fx-background-color: #f3f4f6; 
-                              -fx-text-fill: #374151; 
-                              -fx-font-weight: 600;
-                              -fx-background-radius: 20;
-                              -fx-padding: 8 16;"/>
+
+
+
             <MFXButton text="Giá tăng dần" 
                        onAction="#onSortPriceAsc"
                        style="-fx-background-color: #f3f4f6; 

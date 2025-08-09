@@ -6,16 +6,20 @@ public class Order {
     private String productName;
     private int amount;
     private int total;
+    private String address;
     private String date;
+    private String status;
 
     // ✅ Constructor đầy đủ
-    public Order(int orderID, String customerName, String productName, int amount, int total, String date) {
+    public Order(int orderID, String customerName, String productName, int amount, int total, String date, String address, String status) {
         this.orderID = orderID;
         this.customerName = customerName;
         this.productName = productName;
         this.amount = amount;
         this.total = total;
         this.date = date;
+        this.address = address;
+        this.status = status;
     }
 
     // ✅ Constructor rỗng
@@ -30,6 +34,9 @@ public class Order {
     public void setOrderID(int orderID) {
         this.orderID = orderID;
     }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
     public String getCustomerName() {
         return customerName;
@@ -69,5 +76,13 @@ public class Order {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String adress) {
+        this.address = adress;
     }
 }
