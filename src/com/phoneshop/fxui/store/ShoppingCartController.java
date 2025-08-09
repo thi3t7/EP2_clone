@@ -32,7 +32,9 @@ public class ShoppingCartController implements Initializable {
     @FXML private TextField searchBar;
     @FXML private Label txtUserName;
     @FXML private ImageView Img;
-    @FXML private Label totalLabel;   // ✅ Dùng label này cho tổng tiền
+    @FXML private Label totalLabel;   // ✅ Tổng tiền hàng
+    @FXML private Label finalTotalLabel; // ✅ Tổng tiền cuối cùng
+    @FXML private Label itemCountLabel; // ✅ Số lượng sản phẩm
     @FXML private MFXButton btnBack;
     @FXML private MFXButton btnLogout;
     @FXML private Label topBannerText;
@@ -41,6 +43,7 @@ public class ShoppingCartController implements Initializable {
     @FXML private MFXButton btnCheckout;
 
     private final SimpleIntegerProperty total = new SimpleIntegerProperty(0);
+    private final SimpleIntegerProperty itemCount = new SimpleIntegerProperty(0);
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -48,9 +51,14 @@ public class ShoppingCartController implements Initializable {
         System.out.println("🛒 Cart ID: " + UserName.CartID);
 
         // ✅ Bind tổng tiền với label
-        total.addListener((obs, oldVal, newVal) ->
-                totalLabel.setText(String.format("%,d VNĐ", newVal.intValue()))
-        );
+        total.addListener((obs, oldVal, newVal) -> {
+            finalTotalLabel.setText(String.format("%,d VNĐ", newVal.intValue())); // Chỉ hiển thị tổng cộng
+        });
+
+        // ✅ Bind số lượng sản phẩm
+        itemCount.addListener((obs, oldVal, newVal) -> {
+            itemCountLabel.setText(String.valueOf(newVal.intValue()));
+        });
 
         // ✅ Thêm phương thức thanh toán vào ComboBox
         paymentMethodComboBox.getItems().addAll(
@@ -65,9 +73,10 @@ public class ShoppingCartController implements Initializable {
     }
 
     private void loadCartItems(int cartId) {
-        cartList.getChildren().clear(); // ✅ thay vì GpPhone.getChildren().clear();
+        cartList.getChildren().clear();
         ObservableList<SmartPhone> items = smartphoneDAO.selectAllCart(cartId);
         total.set(0); // Reset tổng tiền
+        itemCount.set(0); // Reset số lượng
 
         try {
             for (SmartPhone phone : items) {
@@ -85,24 +94,30 @@ public class ShoppingCartController implements Initializable {
                 // Tick chọn sản phẩm
                 ctrl.checkbox.selectedProperty().addListener((obs, oldVal, newVal) -> {
                     int itemTotal = parsePrice(ctrl.total_price.getText());
-                    if (newVal) total.set(total.get() + itemTotal);
-                    else total.set(total.get() - itemTotal);
+                    if (newVal) {
+                        total.set(total.get() + itemTotal);
+                        itemCount.set(itemCount.get() + 1);
+                    } else {
+                        total.set(total.get() - itemTotal);
+                        itemCount.set(itemCount.get() - 1);
+                    }
                 });
 
                 // Thay đổi số lượng khi tick chọn
                 ctrl.amount.valueProperty().addListener((obs, oldVal, newVal) -> {
                     int price = parsePrice(ctrl.price.getText());
-                    ctrl.total_price.setText((newVal * price) + " VNĐ");
+                    ctrl.total_price.setText(String.format("%,d VNĐ", newVal * price));
                     if (ctrl.checkbox.isSelected()) {
                         int delta = (newVal - oldVal) * price;
                         total.set(total.get() + delta);
                     }
                 });
 
-                cartList.getChildren().add(pane); // ✅ thêm vào cartList
+                cartList.getChildren().add(pane);
             }
         } catch (IOException e) {
             System.out.println("❌ Error loading cart items: " + e.getMessage());
+            showErrorAlert("Lỗi tải giỏ hàng", "Không thể tải danh sách sản phẩm trong giỏ hàng.");
         }
     }
 
@@ -110,11 +125,12 @@ public class ShoppingCartController implements Initializable {
         return Integer.parseInt(priceText.replaceAll("[^\\d]", ""));
     }
 
-//    private void setGridSize() {
-//        GpPhone.setMinSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-//        GpPhone.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-//        GpPhone.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
-//    }
+    private void showErrorAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR, content, ButtonType.OK);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.showAndWait();
+    }
 
     // ===== Sự kiện người dùng =====
 
@@ -127,7 +143,10 @@ public class ShoppingCartController implements Initializable {
     @FXML
     private void btnCheckoutClick(ActionEvent e) {
         if (total.get() == 0) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Bạn chưa chọn sản phẩm nào để thanh toán!", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.WARNING, 
+                "Bạn chưa chọn sản phẩm nào để thanh toán!", ButtonType.OK);
+            alert.setTitle("Giỏ hàng trống");
+            alert.setHeaderText(null);
             alert.showAndWait();
             return;
         }
@@ -135,27 +154,40 @@ public class ShoppingCartController implements Initializable {
         String paymentMethod = paymentMethodComboBox.getValue();
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
                 "Bạn đã chọn phương thức: " + paymentMethod +
-                        "\nTổng tiền: " + totalLabel.getText() +
+                        "\nTổng tiền: " + finalTotalLabel.getText() +
+                        "\nSố lượng sản phẩm: " + itemCountLabel.getText() + " sản phẩm" +
                         "\n\nXác nhận thanh toán?",
                 ButtonType.YES, ButtonType.NO);
         confirm.setTitle("Xác nhận thanh toán");
+        confirm.setHeaderText(null);
         confirm.showAndWait();
 
         if (confirm.getResult() == ButtonType.YES) {
-            // ✅ 1. Xử lý thanh toán trong DB
-            smartphoneDAO.ordered(UserName.CartID);
+            try {
+                // ✅ 1. Xử lý thanh toán trong DB
+                smartphoneDAO.ordered(UserName.CartID);
 
-            // ✅ 2. Xóa các sản phẩm đã tick trong giao diện
-            cartList.getChildren().removeIf(node -> {
-                ProductInfoController ctrl = (ProductInfoController) node.getProperties().get("controller");
-                return ctrl != null && ctrl.checkbox.isSelected();
-            });
+                // ✅ 2. Xóa các sản phẩm đã tick trong giao diện
+                cartList.getChildren().removeIf(node -> {
+                    ProductInfoController ctrl = (ProductInfoController) node.getProperties().get("controller");
+                    return ctrl != null && ctrl.checkbox.isSelected();
+                });
 
-            // ✅ 3. Reset tổng tiền
-            total.set(0);
+                // ✅ 3. Reset tổng tiền và số lượng
+                total.set(0);
+                itemCount.set(0);
 
-            Alert success = new Alert(Alert.AlertType.INFORMATION, "Thanh toán thành công! Các sản phẩm đã chọn đã bị xóa khỏi giỏ hàng.", ButtonType.OK);
-            success.showAndWait();
+                Alert success = new Alert(Alert.AlertType.INFORMATION, 
+                    "✅ Thanh toán thành công!\n\nCác sản phẩm đã chọn đã được xử lý.\nCảm ơn bạn đã mua hàng!", 
+                    ButtonType.OK);
+                success.setTitle("Thanh toán thành công");
+                success.setHeaderText(null);
+                success.showAndWait();
+                
+            } catch (Exception ex) {
+                System.out.println("❌ Error during checkout: " + ex.getMessage());
+                showErrorAlert("Lỗi thanh toán", "Có lỗi xảy ra trong quá trình thanh toán. Vui lòng thử lại.");
+            }
         }
     }
 

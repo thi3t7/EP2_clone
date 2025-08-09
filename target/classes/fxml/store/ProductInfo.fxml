@@ -17,28 +17,33 @@
             fx:controller="com.phoneshop.fxui.store.ProductInfoController">
 
     <stylesheets>
-        <!-- <URL value="@/fxml/Css/FxmlCss.css" /> -->
+        <URL value="@/css/ShoppingCart.css" />
     </stylesheets>
 
-     <HBox layoutX="40.0" layoutY="100.0" spacing="40.0" AnchorPane.bottomAnchor="20.0">
+     <HBox layoutX="40.0" layoutY="100.0" spacing="40.0" AnchorPane.bottomAnchor="20.0" 
+           style="-fx-padding: 20; -fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);">
         <!-- Hình ảnh sản phẩm -->
         <ImageView fx:id="image" fitHeight="120.0" fitWidth="120.0"
-                   layoutX="30.0" layoutY="15.0" preserveRatio="true" />
+                   layoutX="30.0" layoutY="15.0" preserveRatio="true" 
+                   style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);" />
 
         <!-- Check box -->
-        <CheckBox fx:id="checkbox" layoutX="10.0" layoutY="65.0" prefWidth="20.0" prefHeight="20.0" />
+        <CheckBox fx:id="checkbox" layoutX="10.0" layoutY="65.0" prefWidth="20.0" prefHeight="20.0" 
+                  style="-fx-background-color: white; -fx-border-color: #cbd5e1; -fx-border-radius: 4px; -fx-background-radius: 4px;" />
 
         <!-- Tên sản phẩm -->
         <Label fx:id="name" layoutX="170.0" layoutY="20.0" prefWidth="200.0" prefHeight="40.0" wrapText="true"
-               text="Tên sản phẩm" textFill="#055b1e">
+               text="Tên sản phẩm" 
+               style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;">
             <font>
-                <Font size="16.0"/>
+                <Font size="18.0" bold="true"/>
             </font>
         </Label>
 
         <!-- Hãng sản xuất -->
         <Label fx:id="manufacturer" layoutX="170.0" layoutY="65.0" prefWidth="200.0" prefHeight="25.0"
-               text="Hãng: Apple" textFill="#2F4F4F">
+               text="Hãng: Apple" 
+               style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-font-weight: 600;">
             <font>
                 <Font size="14.0"/>
             </font>
@@ -46,29 +51,31 @@
 
         <!-- Giá sản phẩm -->
         <Label fx:id="price" layoutX="390.0" layoutY="45.0" prefWidth="80.0" prefHeight="25.0"
-               textFill="#055b1e">
+               style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #059669;">
             <font>
-                <Font size="16.0"/>
+                <Font size="16.0" bold="true"/>
             </font>
         </Label>
 
         <!-- Số lượng (Spinner) -->
-        <Spinner fx:id="amount" layoutX="500.0" layoutY="45.0" prefWidth="90.0" prefHeight="30.0"/>
+        <Spinner fx:id="amount" layoutX="500.0" layoutY="45.0" prefWidth="90.0" prefHeight="30.0"
+                 style="-fx-background-color: #f8fafc; -fx-border-color: #e2e8f0; -fx-border-radius: 6px; -fx-background-radius: 6px;"/>
 
         <!-- Tổng tiền -->
         <Label fx:id="total_price" layoutX="620.0" layoutY="45.0" prefWidth="80.0" prefHeight="25.0"
-                textFill="#055b1e">
+                style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #dc2626; -fx-background-color: #fef3c7; -fx-background-radius: 8px; -fx-padding: 5 10;">
             <font>
-                <Font size="16.0"/>
+                <Font size="16.0" bold="true"/>
             </font>
         </Label>
 
         <!-- Nút xóa -->
         <MFXButton fx:id="deleteBtn" layoutX="730.0" layoutY="42.0" prefWidth="80.0" prefHeight="36.0"
-                   text="Xóa" textFill="#055b1e" style="-fx-background-color: #DDDDDD;"
-                   onAction="#deleteBtnClick">
+                   text="Xóa" styleClass="delete-button"
+                   onAction="#deleteBtnClick"
+                   style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8px;">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" bold="true"/>
             </font>
         </MFXButton>
     </HBox>
