@@ -18,9 +18,9 @@
             xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml" 
             fx:controller="com.phoneshop.fxui.store.ShoppingCartController">
    
-   <stylesheets>
-       <URL value="@/css/ShoppingCart.css" />
-   </stylesheets>
+<!--   <stylesheets>-->
+<!--&lt;!&ndash;       <URL value="@/css/ShoppingCart.css" />&ndash;&gt;-->
+<!--   </stylesheets>-->
 
    <children>
       <!-- Main Grid Layout -->
@@ -36,7 +36,7 @@
                <Label fx:id="topBannerText" 
                       text="SẢN PHẨM CHÍNH HÃNG - CAM KẾT LỖI ĐỔI LIỀN - HOTLINE 1420.0420"
                       style="-fx-font-size: 14px; -fx-text-fill: white; -fx-font-weight: bold;"
-                      StackPane.alignment="CENTER_LEFT"/>
+                      StackPane.alignment="CENTER"/>
             </StackPane>
 
             <!-- Main Header với 3 cột -->
@@ -145,13 +145,10 @@
                   <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 0 0 20 0; -fx-border-color: #e5e7eb; -fx-border-width: 0 0 1 0;">
                      <Label text="Sản phẩm trong giỏ hàng" 
                             style="-fx-font-size: 18px; -fx-font-weight: 600; -fx-text-fill: #374151;"/>
-                     <Label fx:id="itemCountLabel" text="(0 sản phẩm)" 
-                            style="-fx-font-size: 14px; -fx-text-fill: #6b7280;"/>
                   </HBox>
 
                   <!-- Cart Items List -->
-                  <ScrollPane fitToWidth="true" prefHeight="500.0" 
-                              styleClass="scroll-pane"
+                  <ScrollPane fitToWidth="true" prefHeight="500.0"
                               style="-fx-background-color: transparent; -fx-background: transparent;">
                      <VBox fx:id="cartList" spacing="20">
                         <padding>
@@ -162,7 +159,7 @@
                </VBox>
 
                <!-- Cột phải: Tóm tắt đơn hàng -->
-               <VBox spacing="20" prefWidth="350" 
+               <VBox spacing="20" prefWidth="350" minWidth="350" maxWidth="350"
                      style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5); -fx-padding: 30;">
                   
                   <!-- Order Summary Header -->
@@ -175,7 +172,7 @@
                         <Label text="💳" style="-fx-font-size: 20px;"/>
                         <VBox spacing="5">
                            <Label text="Tổng cộng" style="-fx-font-size: 14px; -fx-text-fill: #6b7280;"/>
-                           <Label fx:id="finalTotalLabel" text="0 VNĐ" 
+                           <Label fx:id="totalLabel" text="0 VNĐ"
                                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #dc2626;"/>
                         </VBox>
                      </HBox>
@@ -183,17 +180,16 @@
 
                   <!-- Payment Method -->
                   <VBox spacing="8">
-                     <Label text="💳 Phương thức thanh toán" 
+                     <Label text="Phương thức thanh toán"
                             style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #374151;"/>
                      <ComboBox fx:id="paymentMethodComboBox" prefWidth="300.0"
-                               styleClass="combo-box"
                                style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #e5e7eb;"/>
                   </VBox>
 
                   <!-- Action Buttons -->
                   <VBox spacing="12">
                      <MFXButton fx:id="btnCheckout" 
-                                text="💳 Thanh toán ngay" 
+                                text="Đặt Hàng Ngay"
                                 onAction="#btnCheckoutClick" 
                                 style="-fx-background-color: linear-gradient(to right, #10b981 0%, #059669 100%); 
                                        -fx-text-fill: white; 

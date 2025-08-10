@@ -16,9 +16,9 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.phoneshop.fxui.store.ProductInfoController">
 
-    <stylesheets>
-        <URL value="@/css/ShoppingCart.css" />
-    </stylesheets>
+<!--    <stylesheets>-->
+<!--        <URL value="@/css/ShoppingCart.css" />-->
+<!--    </stylesheets>-->
 
      <HBox layoutX="40.0" layoutY="100.0" spacing="40.0" AnchorPane.bottomAnchor="20.0" 
            style="-fx-padding: 20; -fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);">
@@ -36,7 +36,7 @@
                text="Tên sản phẩm" 
                style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1f2937;">
             <font>
-                <Font size="18.0" bold="true"/>
+                <Font size="18.0" name="System Bold"/>
             </font>
         </Label>
 
@@ -45,7 +45,7 @@
                text="Hãng: Apple" 
                style="-fx-font-size: 14px; -fx-text-fill: #6b7280; -fx-font-weight: 600;">
             <font>
-                <Font size="14.0"/>
+                <Font size="14.0" name="System Bold"/>
             </font>
         </Label>
 
@@ -53,7 +53,7 @@
         <Label fx:id="price" layoutX="390.0" layoutY="45.0" prefWidth="80.0" prefHeight="25.0"
                style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #059669;">
             <font>
-                <Font size="16.0" bold="true"/>
+                <Font size="16.0" name="System Bold"/>
             </font>
         </Label>
 
@@ -65,7 +65,7 @@
         <Label fx:id="total_price" layoutX="620.0" layoutY="45.0" prefWidth="80.0" prefHeight="25.0"
                 style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #dc2626; -fx-background-color: #fef3c7; -fx-background-radius: 8px; -fx-padding: 5 10;">
             <font>
-                <Font size="16.0" bold="true"/>
+                <Font size="16.0" name="System Bold"/>
             </font>
         </Label>
 
@@ -75,7 +75,7 @@
                    onAction="#deleteBtnClick"
                    style="-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 8px;">
             <font>
-                <Font size="14.0" bold="true"/>
+                <Font size="14.0" name="System Bold"/>
             </font>
         </MFXButton>
     </HBox>

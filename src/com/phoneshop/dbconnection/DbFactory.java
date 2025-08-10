@@ -15,7 +15,7 @@ import java.sql.SQLException;
  */
 public class DbFactory {
     private static final String MYSQL_USERNAME = "root";
-    private static final String MYSQL_PASSWORD = "Legiabao1";
+    private static final String MYSQL_PASSWORD = "admin123";
     private static final String MYSQL_CONN_STRING = "jdbc:mysql://localhost/management";
 //    private static final String SQLITE_CONN_STRING = "jdbc:sqlite:management.db";
     
